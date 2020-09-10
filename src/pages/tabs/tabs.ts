@@ -1,5 +1,9 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage } from 'ionic-angular';
+
+import { ChatsPage  } from '../chats/chats';
+import { GroupsPage  } from '../groups/groups';
+import { ProfilePage  } from '../profile/profile';
 
 /**
  * Generated class for the TabsPage page.
@@ -14,8 +18,15 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
   templateUrl: 'tabs.html',
 })
 export class TabsPage {
+  
+  tabs = [
+    { title: "Groups", root: GroupsPage, icon: "contacts" },
+    { title: "Chats", root: ChatsPage, icon: "chatboxes" },
+    { title: "Profile", root: ProfilePage, icon: "contact" }
+  ];
+*
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  constructor() {
   }
 
   ionViewDidLoad() {
