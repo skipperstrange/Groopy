@@ -23,6 +23,7 @@ import { AngularFireDatabase, FirebaseObjectObservable } from 'angularfire2/data
 import { AngularFireAuthModule } from 'angularfire2/auth';
 import { AngularFireAuth } from 'angularfire2/auth';
 import { AuthProvider } from '../providers/auth/auth';
+import { UserProvider } from '../providers/user/user';
 
 @NgModule({
   declarations: [
@@ -49,7 +50,8 @@ import { AuthProvider } from '../providers/auth/auth';
     StatusBar,
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
-    AuthProvider
+    AuthProvider,
+    UserProvider
   ]
 })
 export class AppModule {}

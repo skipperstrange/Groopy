@@ -36,7 +36,10 @@ export class LoginPage {
         console.log("error logging in");
         console.log(res);
       }
-    })
+    });
+  }
 
+  signup(){
+    this.navCtrl.push("SignUpPage");
   }
 }
