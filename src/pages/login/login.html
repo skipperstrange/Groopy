@@ -2,17 +2,17 @@
   <h1 class="title">Grööpy</h1>
 	<ion-card>
 		<ion-card-header>
-			Login Form
+			Login
 		</ion-card-header>
 		<ion-card-content>
 			<ion-list no-line>
 				<ion-item>
-					<ion-input type="text" placeholder="Username"  [(ngModel)]="userCredentials.email"></ion-input>
+					<ion-input type="text" required placeholder="Username"  [(ngModel)]="userCredentials.email"></ion-input>
 				</ion-item>
 				<ion-item>
-					<ion-input type="password" placeholder="Password"  [(ngModel)]="userCredentials.password"></ion-input>
+					<ion-input type="password" required placeholder="Password"  [(ngModel)]="userCredentials.password"></ion-input>
 				</ion-item>
-				<a>Forgot your login detail? <b>Get help signing in</b></a>
+				<a>Forgot your login details? <b>Get help signing in</b></a>
 				<button ion-button block outline color="light" (click)="signin()">Log in</button>
 				<p>OR</p>
 				<button ion-button block color="facebook">
@@ -21,5 +21,5 @@
 			</ion-list>
 		</ion-card-content>
 	</ion-card>
-	<button class="bottom" ion-button clear full (click)="signup()" color="light">Don't have an account? Sign up</button>
+	<button class="bottom" ion-button clear full (click)="signup()" color="light">New to Groopy? Sign up</button>
 </ion-content>

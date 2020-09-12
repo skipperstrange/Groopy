@@ -2,20 +2,29 @@
   <h1 class="title">Grööpy</h1>
 	<ion-card>
 		<ion-card-header>
-			Login Form
+			Sign Up
 		</ion-card-header>
 		<ion-card-content>
 			<ion-list no-line>
+
+        <ion-item>
+					<ion-input type="text" required placeholder="Display Name"  [(ngModel)]="newUser.displayName"></ion-input>
+				</ion-item>
+
 				<ion-item>
-					<ion-input type="email" placeholder="Username"  [(ngModel)]="email"></ion-input>
+					<ion-input type="email" required placeholder="Email"  [(ngModel)]="newUser.email"></ion-input>
 				</ion-item>
 				<ion-item>
-					<ion-input type="password" placeholder="Password"  [(ngModel)]="userCredentials.password"></ion-input>
+					<ion-input type="password"  required placeholder="Password"  [(ngModel)]="newUser.password"></ion-input>
 				</ion-item>
-				
-				<button ion-button block outline color="light" (click)="signin()">Log in</button>
-			
-			
+
+        <button ion-button block outline color="light" (click)="signin()">Create Account</button>
+        <p>OR</p>
+				<button ion-button block color="facebook">
+					<ion-icon name="logo-facebook"></ion-icon> Login with facebook
+				</button>
+
+
 			</ion-list>
 		</ion-card-content>
 	</ion-card>

@@ -11,7 +11,7 @@ import { userCreds } from "../../models/interfaces/usercreds";
 @Injectable()
 export class AuthProvider {
 
-  constructor(public aFireAuth : AngularFireAuth, ) {
+  constructor(public aFireAuth : AngularFireAuth) {
     console.log('Hello AuthProvider Provider');
   }
 
