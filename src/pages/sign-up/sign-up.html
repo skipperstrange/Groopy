@@ -1,5 +1,6 @@
 <ion-content class="background">
   <h1 class="title">Grööpy</h1>
+  <form [formGroup]="regForm">
 	<ion-card>
 		<ion-card-header>
 			Sign Up
@@ -8,25 +9,24 @@
 			<ion-list no-line>
 
         <ion-item>
-					<ion-input type="text" required placeholder="Display Name"  [(ngModel)]="newUser.displayName"></ion-input>
+					<ion-input type="text" required placeholder="Display Name"  formControlName="displayName" [(ngModel)]="newUser.displayName"></ion-input>
 				</ion-item>
 
 				<ion-item>
-					<ion-input type="email" required placeholder="Email"  [(ngModel)]="newUser.email"></ion-input>
+					<ion-input type="email" required placeholder="Email" formControlName="email" [(ngModel)]="newUser.email"></ion-input>
 				</ion-item>
 				<ion-item>
-					<ion-input type="password"  required placeholder="Password"  [(ngModel)]="newUser.password"></ion-input>
+					<ion-input type="password"  required placeholder="Password" formControlName="password" [(ngModel)]="newUser.password"></ion-input>
 				</ion-item>
 
-        <button ion-button block outline color="light" (click)="signin()">Create Account</button>
+        <button ion-button block outline color="light" (click)="signup()">Create Account</button>
         <p>OR</p>
 				<button ion-button block color="facebook">
 					<ion-icon name="logo-facebook"></ion-icon> Login with facebook
 				</button>
-
-
 			</ion-list>
 		</ion-card-content>
-	</ion-card>
+  </ion-card>
+</form>
 	<button class="bottom" ion-button clear full (click)="login()" color="light">Already have an account? Login</button>
 </ion-content>

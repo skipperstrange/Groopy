@@ -1,5 +1,6 @@
 <ion-content class="background">
   <h1 class="title">Grööpy</h1>
+  <form [formGroup]="loginForm" (ngSubmit)="signin()">
 	<ion-card>
 		<ion-card-header>
 			Login
@@ -7,19 +8,20 @@
 		<ion-card-content>
 			<ion-list no-line>
 				<ion-item>
-					<ion-input type="text" required placeholder="Username"  [(ngModel)]="userCredentials.email"></ion-input>
+					<ion-input type="email" required placeholder="Email" formControlName="email"  [(ngModel)]="userCredentials.email"></ion-input>
 				</ion-item>
 				<ion-item>
-					<ion-input type="password" required placeholder="Password"  [(ngModel)]="userCredentials.password"></ion-input>
+					<ion-input type="password" required placeholder="Password"  formControlName="password" [(ngModel)]="userCredentials.password"></ion-input>
 				</ion-item>
 				<a>Forgot your login details? <b>Get help signing in</b></a>
-				<button ion-button block outline color="light" (click)="signin()">Log in</button>
+				<button ion-button block outline color="light" [disabled]="!loginForm.valid" type="submit">Log in</button>
 				<p>OR</p>
 				<button ion-button block color="facebook">
 					<ion-icon name="logo-facebook"></ion-icon> Login with facebook
 				</button>
 			</ion-list>
 		</ion-card-content>
-	</ion-card>
-	<button class="bottom" ion-button clear full (click)="signup()" color="light">New to Groopy? Sign up</button>
+  </ion-card>
+</form>
+  <button class="bottom"  ion-button clear  (click)="signup()" full color="light">New to Groopy? Sign up</button>
 </ion-content>
