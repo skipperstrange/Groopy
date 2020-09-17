@@ -20,16 +20,17 @@ import { UserProvider } from '../../providers/user/user';
 export class SignUpPage {
 
   newUser = {} as userInterface;
-  private regForm: FormGroup
+  public regForm: FormGroup
 
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public userService: UserProvider, public toastCtrl: ToastController, public loaderCtrl: LoadingController,
     public formBuilder: FormBuilder) {
     this.regForm = formBuilder.group({
-      email:['', [Validators.email, Validators.required]],
-      password: ['', Validators.required, Validators.minLength(6)],
-      displayName: ['', Validators.required, Validators.minLength(3)]
+      email:['', [Validators.required]],
+      password: ['', Validators.compose([Validators.required, Validators.minLength(5)])],
+      displayName: ['', Validators.compose([Validators.required, Validators.minLength(3)])]
     })
+
   }
 
   ionViewDidLoad() {
@@ -39,7 +40,8 @@ export class SignUpPage {
   signup(){
     const toast = this.toastCtrl.create({
       duration: 5000,
-      showCloseButton: true
+      showCloseButton: true,
+      position: "top"
     });
     const loader = this.loaderCtrl.create({
       content: "",
@@ -47,13 +49,29 @@ export class SignUpPage {
 
     loader.present();
 
-    if (!this.regForm.valid){
-      console.log(this.regForm);
-      console.log("Nice try!");
+    if(this.newUser.displayName == undefined){
       loader.dismiss();
-      toast.setMessage("There are erros. Please check and try again")
-      toast.present()
-    }else{
+      toast.setMessage("Display name cannot be empty")
+      toast.present();
+      return;
+    }
+    else if( this.newUser.displayName.length < 3){
+      loader.dismiss();
+      toast.setMessage("Display should at least 3 characters")
+      toast.present();
+    }
+    else if(this.newUser.email == undefined){
+      loader.dismiss();
+      toast.setMessage("Email cannot be empty")
+      toast.present();
+      return;
+    }
+    else if(this.newUser.password == undefined){
+      loader.dismiss();
+      toast.setMessage("Password cannot be empty")
+      toast.present();
+      return;
+    } else {
       this.userService.createUser(this.newUser).then((res: any)=>{
         if(res.success)
         loader.dismiss();

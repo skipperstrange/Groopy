@@ -22,14 +22,16 @@ export class UserProvider {
           this.aFireAuth.auth.currentUser.updateProfile({
             displayName: newUser.displayName,
             photoURL: ''
-          });
-        }).then(()=>{
-          this.firedata.child(this.aFireAuth.auth.currentUser.uid).set({
-            uid: this.aFireAuth.auth.currentUser.uid,
-            displayName: newUser.displayName,
-            photoURL: "https://www.pngitem.com/pimgs/m/146-1468843_profile-icon-orange-png-transparent-png.png"
-          }).then(()=> {
-            resolve({success: true})
+          }).then(()=>{
+            this.firedata.child(this.aFireAuth.auth.currentUser.uid).set({
+              uid: this.aFireAuth.auth.currentUser.uid,
+              displayName: newUser.displayName,
+              photoURL: "https://www.pngitem.com/pimgs/m/146-1468843_profile-icon-orange-png-transparent-png.png"
+            }).then(()=> {
+              resolve({success: true})
+            }).catch((err) => {
+              reject(err);
+            })
           }).catch((err) => {
             reject(err);
           })
@@ -39,6 +41,21 @@ export class UserProvider {
       })
 
       return promise;
+  }
+
+  passwordResetWithEmail(email){
+
+    var promise = new Promise((resolve, reject)=>{
+      firebase.auth().sendPasswordResetEmail(email)
+        .then(()=>{
+          resolve({success: true})
+        })
+        .catch((err)=>{
+          reject(err)
+        })
+    })
+
+    return promise
   }
 
 }

@@ -19,7 +19,7 @@
 					<ion-input type="password"  required placeholder="Password" formControlName="password" [(ngModel)]="newUser.password"></ion-input>
 				</ion-item>
 
-        <button ion-button block outline color="light" (click)="signup()">Create Account</button>
+        <button ion-button block outline color="light" [disabled]="!regForm.valid" (click)="signup()">Create Account</button>
         <p>OR</p>
 				<button ion-button block color="facebook">
 					<ion-icon name="logo-facebook"></ion-icon> Login with facebook

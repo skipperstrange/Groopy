@@ -7,10 +7,11 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { MyApp } from './app.component';
 //import { HomePage } from '../pages/home/home';
 import { LoginPage  } from '../pages/login/login';
-import { TabsPage  } from '../pages/tabs/tabs';
 import { ProfilePageModule } from '../pages/profile/profile.module';
 import { GroupsPageModule } from '../pages/groups/groups.module';
 import { ChatsPageModule } from '../pages/chats/chats.module';
+import { PasswordResetPageModule } from '../pages/password-reset/password-reset.module';
+
 
 import { firebaseConfig } from "./app.firebaseconfig";
 
@@ -38,6 +39,7 @@ import { UserProvider } from '../providers/user/user';
   ChatsPageModule,
   GroupsPageModule,
   ProfilePageModule,
+  PasswordResetPageModule,
   BrowserModule,
     IonicModule.forRoot(MyApp)
   ],

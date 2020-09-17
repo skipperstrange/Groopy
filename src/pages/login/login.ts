@@ -19,7 +19,7 @@ import { userCreds } from '../../models/interfaces/usercreds';
 export class LoginPage {
 
   userCredentials = {} as userCreds;
-  private loginForm: FormGroup
+  public loginForm: FormGroup
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
      public toastCtrl: ToastController, public loadCtrl: LoadingController, public authService: AuthProvider,
@@ -36,12 +36,12 @@ export class LoginPage {
   signin(){
     const toast = this.toastCtrl.create({
       duration: 5000,
-      showCloseButton: true
+      showCloseButton: true,
+      position: "top"
     })
 
     const loader = this.loadCtrl.create({})
 
-    console.log(this.userCredentials)
     if(this.userCredentials.email == undefined){
       toast.setMessage("Email cannot be empty")
       toast.present();
@@ -59,7 +59,7 @@ export class LoginPage {
           this.navCtrl.setRoot("TabsPage");
         }
       }).catch((err)=>{
-      loader.dismiss()
+        loader.dismiss();
       toast.setMessage(err)
       toast.present();
       });
@@ -69,5 +69,9 @@ export class LoginPage {
 
   signup(){
     this.navCtrl.push("SignUpPage");
+  }
+
+  passwordReset(){
+    this.navCtrl.push("PasswordResetPage");
   }
 }

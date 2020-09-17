@@ -13,13 +13,16 @@
 				<ion-item>
 					<ion-input type="password" required placeholder="Password"  formControlName="password" [(ngModel)]="userCredentials.password"></ion-input>
 				</ion-item>
-				<a>Forgot your login details? <b>Get help signing in</b></a>
 				<button ion-button block outline color="light" [disabled]="!loginForm.valid" type="submit">Log in</button>
 				<p>OR</p>
 				<button ion-button block color="facebook">
 					<ion-icon name="logo-facebook"></ion-icon> Login with facebook
 				</button>
-			</ion-list>
+      </ion-list>
+      <ion-row style="height: 3rem"></ion-row>
+      <p>
+				<a (click)="passwordReset()">Forgot your login details? <b>Get help signing in</b></a>
+      </p>
 		</ion-card-content>
   </ion-card>
 </form>
