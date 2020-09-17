@@ -29,7 +29,6 @@ import { UserProvider } from '../providers/user/user';
 @NgModule({
   declarations: [
     MyApp,
-    //HomePage,
     LoginPage,
   ],
   imports: [

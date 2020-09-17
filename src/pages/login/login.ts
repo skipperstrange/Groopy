@@ -34,19 +34,23 @@ export class LoginPage {
   }
 
   signin(){
+
     const toast = this.toastCtrl.create({
       duration: 5000,
       showCloseButton: true,
       position: "top"
     })
 
-    const loader = this.loadCtrl.create({})
+    const loader = this.loadCtrl.create({duration: 20000})
+    loader.present()
 
     if(this.userCredentials.email == undefined){
+      loader.dismiss()
       toast.setMessage("Email cannot be empty")
       toast.present();
       return;
     }else if(this.userCredentials.password == undefined){
+      loader.dismiss()
       toast.setMessage("Password cannot be empty")
       toast.present();
       return;

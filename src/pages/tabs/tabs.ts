@@ -18,7 +18,7 @@ import { ProfilePage  } from '../profile/profile';
   templateUrl: 'tabs.html',
 })
 export class TabsPage {
-  
+
   tabs = [
     { title: "Groups", root: GroupsPage, icon: "contacts" },
     { title: "Chats", root: ChatsPage, icon: "chatboxes" },
