@@ -1,11 +1,35 @@
 <ion-header>
 
   <ion-navbar color="app-primary">
+
+
+    <ion-buttons start>
+      <button ion-button menuToggle>
+        <ion-icon name="menu"></ion-icon>
+      </button>
+    </ion-buttons>
+
+
     <ion-title>Profile</ion-title>
   </ion-navbar>
+
 </ion-header>
 
 
 <ion-content padding>
-ijiojko
+
+  <div class="profile-img">
+    {{photoUrl}}
+  </div>
+
+  <div>
+    <button ion-button (click)="chooseImg()">Choose Image</button>
+  </div>
+  <div [hidden]="moveOn">
+    <button ion-button (click)="proceed()">Choose Image</button>
+  </div>
+  <div [hidden]="!moveOn">
+    <button ion-button (click)="proceed()">Choose Image</button>
+  </div>
+
 </ion-content>

@@ -3,6 +3,6 @@ export interface menuInterface {
   pageName: string;
   pageComponent?: string;
   tabComponent?: string;
-  index?: number;
+  tabIndex?: number;
   icon?: string;
 }

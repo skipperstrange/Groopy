@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, ToastController, LoadingController } from 'ionic-angular';
 import { Validators, FormBuilder, FormGroup } from "@angular/forms";
 import { UserProvider } from '../../providers/user/user';
-import { LoginPage } from '../login/login';
 /**
  * Generated class for the PasswordResetPage page.
  *
@@ -66,7 +65,7 @@ export class PasswordResetPage {
 
 
   login(){
-    this.navCtrl.setRoot(LoginPage);
+    this.navCtrl.pop();
   }
 
 }

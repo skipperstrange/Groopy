@@ -3,6 +3,10 @@ import { ErrorHandler, NgModule } from '@angular/core';
 import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
+import { File } from '@ionic-native/file';
+import { FilePath } from '@ionic-native/file-path';
+import { FileChooser } from '@ionic-native/file-chooser';
+
 
 import { MyApp } from './app.component';
 //import { HomePage } from '../pages/home/home';
@@ -25,6 +29,7 @@ import { AngularFireAuthModule } from 'angularfire2/auth';
 import { AngularFireAuth } from 'angularfire2/auth';
 import { AuthProvider } from '../providers/auth/auth';
 import { UserProvider } from '../providers/user/user';
+import { MediaHandlerProvider } from '../providers/media-handler/media-handler';
 
 @NgModule({
   declarations: [
@@ -50,9 +55,13 @@ import { UserProvider } from '../providers/user/user';
   providers: [
     StatusBar,
     SplashScreen,
+    File,
+    FilePath,
+    FileChooser,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     AuthProvider,
-    UserProvider
+    UserProvider,
+    MediaHandlerProvider
   ]
 })
 export class AppModule {}

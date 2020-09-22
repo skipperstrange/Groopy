@@ -1,12 +1,6 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
-
-/**
- * Generated class for the ProfilePage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
+import { MediaHandlerProvider } from '../../providers/media-handler/media-handler';
 
 @IonicPage()
 @Component({
@@ -15,11 +9,24 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 })
 export class ProfilePage {
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  moveOn = true
+  photoUrl: string
+
+  constructor(public navCtrl: NavController, public navParams: NavParams,public imageService: MediaHandlerProvider) {
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad ProfilePage');
+  }
+
+  proceed(){
+  this.navCtrl.setRoot('TabsPage')
+  }
+
+  chooseImg(){
+    this.imageService.uploadImage().then((res)=>{
+      console.log(res)
+    })
   }
 
 }
