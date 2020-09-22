@@ -10,70 +10,30 @@ import { UserProvider } from '../../providers/user/user';
 })
 export class ProfilePage {
 
-  moveOn = true
-  imgUrl: 'https://www.pngitem.com/pimgs/m/146-1468843_profile-icon-orange-png-transparent-png.png'
-
-  constructor(public navCtrl: NavController, public navParams: NavParams,
-    public imageService: MediaHandlerProvider,
-    public userService: UserProvider,
-    public toastCtrl: ToastController,
-    public loadCtrl: LoadingController,
-    public zone: NgZone ) {
+  constructor(public navCtrl: NavController, public navParams: NavParams) {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad ProfilePage');
+    console.log('ionViewDidLoad ProfilePicPage');
   }
 
-  chooseImg(){
-
-    const toast = this.toastCtrl.create({
-      duration: 3000,
-      showCloseButton: true,
-    })
-
-    const loader = this.loadCtrl.create({duration: 1000})
-    loader.present()
-
-    this.imageService.uploadImage().then((uploadedUrl: any)=>{
-      console.log(uploadedUrl)
-      this.zone.run(()=>{
-        this.imgUrl = uploadedUrl
-        this.moveOn = false
-      })
-
-      loader.dismiss()
-      toast.setMessage("Successfully update profile image.")
-    }).catch((err)=>{
-      loader.dismiss()
-      toast.setMessage(err)
-    })
+  ionViewWillEnter(){
+    this.loadUserDetails()
   }
 
+  loadUserDetails(){
 
-  proceed(){
-    const loader = this.loadCtrl.create({duration: 1000})
-    loader.present()
-    this.navCtrl.setRoot('TabsPage')
   }
 
-  updateProceed(){
-    const loader = this.loadCtrl.create({duration: 1000})
-    loader.present()
+  editImage(){
 
-    const toast = this.toastCtrl.create({
-      duration: 3000,
-      showCloseButton: true,
-    })
+  }
 
-    this.userService.updateImage(this.imgUrl).then((res: any)=>{
-      loader.dismiss()
+  editDisplayName(){
 
-      this.navCtrl.setRoot('TabsPage')
-    }).catch((err)=>{
-      loader.dismiss()
-      toast.setMessage(err)
-    })
+  }
+
+  logout(){
 
   }
 

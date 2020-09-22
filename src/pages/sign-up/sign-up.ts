@@ -76,7 +76,7 @@ export class SignUpPage {
         if(res.success)
         loader.dismiss();
         console.log(res)
-          this.navCtrl.push('ProfilePage')
+          this.navCtrl.push('ProfilePicPage')
       }).catch((err)=>{
         loader.dismiss();
         toast.setMessage(err)

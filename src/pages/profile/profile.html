@@ -1,35 +1,21 @@
+<!--
+  Generated template for the ProfilePicPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
 <ion-header>
-
   <ion-navbar color="app-primary">
-
-
     <ion-buttons start>
       <button ion-button menuToggle>
         <ion-icon name="menu"></ion-icon>
       </button>
     </ion-buttons>
-
-
-    <ion-title>Profile</ion-title>
   </ion-navbar>
 
 </ion-header>
 
 
 <ion-content padding>
-
-  <ion-row text-center class="profile-img">
-    <img src="{{imgUrl}}" alt="{{imgUrl}}">
-  </ion-row>
-
-  <ion-row text-center>
-    <button ion-button block outline color="app-primary" (click)="chooseImg()">Choose Image</button>
-  </ion-row>
-  <ion-row text-center *ngIf="moveOn">
-    <button ion-button block outline color="app-primary" (click)="proceed()">Skip this step</button>
-  </ion-row>
-  <ion-row text-center *ngIf="!moveOn">
-    <button ion-button block outline color="app-primary" (click)="updateProceed()">Upload & proceed </button>
-  </ion-row>
 
 </ion-content>
