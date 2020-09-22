@@ -23,7 +23,9 @@ export class SignUpPage {
   public regForm: FormGroup
 
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public userService: UserProvider, public toastCtrl: ToastController, public loaderCtrl: LoadingController,
+  constructor(public navCtrl: NavController, public navParams: NavParams,
+    public userService: UserProvider,
+    public toastCtrl: ToastController, public loaderCtrl: LoadingController,
     public formBuilder: FormBuilder) {
     this.regForm = formBuilder.group({
       email:['', [Validators.required]],

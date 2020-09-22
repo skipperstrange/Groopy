@@ -10,11 +10,16 @@ import { UserProvider } from '../../providers/user/user';
 })
 export class ProfilePage {
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  avatar: any
+  displayName: any
+
+  constructor(public navCtrl: NavController, public navParams: NavParams,
+    public userService: UserProvider, public zone: NgZone,
+    public toastCtrl: ToastController, public loaderCtrl: LoadingController){
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad ProfilePicPage');
+    console.log('ionViewDidLoad ProfilePage');
   }
 
   ionViewWillEnter(){
@@ -22,7 +27,25 @@ export class ProfilePage {
   }
 
   loadUserDetails(){
+    const toast = this.toastCtrl.create({
+      duration: 3000,
+      showCloseButton: true,
+      position: "top"
+    });
+    const loader = this.loaderCtrl.create({duration: 400});
 
+   this.userService.getUserDetails().then((res: any)=>{
+    this.zone.run(()=>{
+    this.avatar = res.photoURL
+    console.log(res)
+    this.displayName = res.displayName
+    })
+   })
+   .catch((err)=>{
+    loader.dismiss()
+    toast.setMessage(err)
+    toast.present()
+  })
   }
 
   editImage(){

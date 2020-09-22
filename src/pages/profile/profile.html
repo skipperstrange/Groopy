@@ -18,4 +18,20 @@
 
 <ion-content padding>
 
+<ion-row text-center>
+  <div class="profile-pic" (click)="editImage()">
+    <img src="{{avatar}}" alt="">
+  </div>
+</ion-row>
+
+<ion-row text-center>
+<h2 (click)="editDisplayName()">{{displayName}}</h2>
+</ion-row>
+
+<ion-row class="bottom">
+<button ion-button block (click)="logout()">
+  Logout
+</button>
+</ion-row>
+
 </ion-content>

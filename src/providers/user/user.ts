@@ -8,6 +8,8 @@ import firebase from 'firebase';
 export class UserProvider {
 
   private firedata = firebase.database().ref('/chatusers')
+  private defaultProfilePic = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAHBAMAAADzDtBxAAAAD1BMVEUAAAAAAAAAAAAAAAAAAABPDueNAAAABXRSTlMUCS0gBIh/TXEAAAAaSURBVAjXYxCEAgY4UIICBmMogMsgFLtAAQCNSwXZKOdPxgAAAABJRU5ErkJggg=='
+  // "https://www.pngitem.com/pimgs/m/146-1468843_profile-icon-orange-png-transparent-png.png"
 
   constructor(public aFireAuth : AngularFireAuth) {
    // console.log('Hello UserProvider Provider');
@@ -21,12 +23,12 @@ export class UserProvider {
         .then(()=>{
           this.aFireAuth.auth.currentUser.updateProfile({
             displayName: newUser.displayName,
-            photoURL: 'https://www.pngitem.com/pimgs/m/146-1468843_profile-icon-orange-png-transparent-png.png'
+            photoURL: this.defaultProfilePic
           }).then(()=>{
             this.firedata.child(this.aFireAuth.auth.currentUser.uid).set({
               uid: this.aFireAuth.auth.currentUser.uid,
               displayName: newUser.displayName,
-              photoURL: "https://www.pngitem.com/pimgs/m/146-1468843_profile-icon-orange-png-transparent-png.png"
+              photoURL: this.defaultProfilePic
             }).then(()=> {
               resolve({success: true})
             }).catch((err) => {
@@ -74,6 +76,19 @@ export class UserProvider {
         .catch((err)=>{
           reject(err)
         })
+      })
+      .catch((err)=>{
+        reject(err)
+      })
+    });
+
+    return promise;
+  }
+
+  getUserDetails(){
+    var promise = new Promise((resolve, reject)=>{
+      this.firedata.child(firebase.auth().currentUser.uid).once('value', (snapshot)=>{
+        resolve(snapshot.val())
       })
       .catch((err)=>{
         reject(err)

@@ -54,6 +54,7 @@ export class ProfilePicPage {
     }).catch((err)=>{
       loader.dismiss()
       toast.setMessage(err)
+      toast.present()
     })
   }
 
