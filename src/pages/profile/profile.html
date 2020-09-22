@@ -18,18 +18,18 @@
 
 <ion-content padding>
 
-  <div class="profile-img">
-    {{photoUrl}}
-  </div>
+  <ion-row text-center class="profile-img">
+    <img src="{{imgUrl}}" alt="{{imgUrl}}">
+  </ion-row>
 
-  <div>
-    <button ion-button (click)="chooseImg()">Choose Image</button>
-  </div>
-  <div [hidden]="moveOn">
-    <button ion-button (click)="proceed()">Choose Image</button>
-  </div>
-  <div [hidden]="!moveOn">
-    <button ion-button (click)="proceed()">Choose Image</button>
-  </div>
+  <ion-row text-center>
+    <button ion-button block outline color="app-primary" (click)="chooseImg()">Choose Image</button>
+  </ion-row>
+  <ion-row text-center *ngIf="moveOn">
+    <button ion-button block outline color="app-primary" (click)="proceed()">Skip this step</button>
+  </ion-row>
+  <ion-row text-center *ngIf="!moveOn">
+    <button ion-button block outline color="app-primary" (click)="updateProceed()">Upload & proceed </button>
+  </ion-row>
 
 </ion-content>

@@ -21,7 +21,7 @@ export class UserProvider {
         .then(()=>{
           this.aFireAuth.auth.currentUser.updateProfile({
             displayName: newUser.displayName,
-            photoURL: ''
+            photoURL: 'https://www.pngitem.com/pimgs/m/146-1468843_profile-icon-orange-png-transparent-png.png'
           }).then(()=>{
             this.firedata.child(this.aFireAuth.auth.currentUser.uid).set({
               uid: this.aFireAuth.auth.currentUser.uid,
@@ -54,8 +54,33 @@ export class UserProvider {
           reject(err)
         })
     })
-
     return promise
+  }
+
+
+  updateImage(imageUrl){
+    var promise = new Promise((resolve, reject)=>{
+      this.aFireAuth.auth.currentUser.updateProfile({
+        displayName: this.aFireAuth.auth.currentUser.displayName,
+        photoURL: imageUrl,
+      }).then(()=>{
+        firebase.database().ref('/chatusers/'+firebase.auth().currentUser.uid).update({
+          photoURL: imageUrl,
+          uid: firebase.auth().currentUser.uid
+        })
+        .then(()=>{
+          resolve({success: true})
+        })
+        .catch((err)=>{
+          reject(err)
+        })
+      })
+      .catch((err)=>{
+        reject(err)
+      })
+    });
+
+    return promise;
   }
 
 }

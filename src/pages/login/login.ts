@@ -36,9 +36,8 @@ export class LoginPage {
   signin(){
 
     const toast = this.toastCtrl.create({
-      duration: 5000,
+      duration: 3000,
       showCloseButton: true,
-      position: "top"
     })
 
     const loader = this.loadCtrl.create({duration: 20000})
@@ -64,8 +63,8 @@ export class LoginPage {
         }
       }).catch((err)=>{
         loader.dismiss();
-      toast.setMessage(err)
-      toast.present();
+        toast.setMessage(err)
+        toast.present();
       });
     }
   }

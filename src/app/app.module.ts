@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { ErrorHandler, NgModule } from '@angular/core';
-import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
+import { IonicApp, IonicErrorHandler, IonicModule, NavParams } from 'ionic-angular';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
 import { File } from '@ionic-native/file';
@@ -12,6 +12,7 @@ import { MyApp } from './app.component';
 //import { HomePage } from '../pages/home/home';
 import { LoginPage  } from '../pages/login/login';
 import { ProfilePageModule } from '../pages/profile/profile.module';
+import { ProfilePicPageModule } from '../pages/profile-pic/profile-pic.module';
 import { GroupsPageModule } from '../pages/groups/groups.module';
 import { ChatsPageModule } from '../pages/chats/chats.module';
 import { PasswordResetPageModule } from '../pages/password-reset/password-reset.module';
@@ -44,6 +45,7 @@ import { MediaHandlerProvider } from '../providers/media-handler/media-handler';
   GroupsPageModule,
   ProfilePageModule,
   PasswordResetPageModule,
+  ProfilePicPageModule,
   BrowserModule,
     IonicModule.forRoot(MyApp)
   ],
@@ -61,7 +63,7 @@ import { MediaHandlerProvider } from '../providers/media-handler/media-handler';
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     AuthProvider,
     UserProvider,
-    MediaHandlerProvider
+    MediaHandlerProvider,
   ]
 })
 export class AppModule {}

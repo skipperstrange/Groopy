@@ -18,7 +18,7 @@ export class MediaHandlerProvider {
   mediaSource: any
   mediaTypes = ['video/mp4','image/jpeg']
   constructor(public fileHandler: File, public fileChooser: FileChooser, public filePath: FilePath) {
-    console.log('Hello MediaHandlerProvider Provider');
+    //console.log('Hello MediaHandlerProvider Provider');
   }
 
 
@@ -55,7 +55,6 @@ export class MediaHandlerProvider {
         })
       })
     })
-
   return promise;
   }
 

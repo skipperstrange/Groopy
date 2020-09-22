@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
-import { IonicPage } from 'ionic-angular';
+import { IonicPage,  } from 'ionic-angular';
+//import { menuInterface } from '../models/interfaces/menuInterface';
+
 
 import { ChatsPage  } from '../chats/chats';
 import { GroupsPage  } from '../groups/groups';
@@ -25,12 +27,18 @@ export class TabsPage {
     { title: "Profile", root: ProfilePage, icon: "contact" }
   ];
 *
+ // var menuTabIndex
 
   constructor() {
+  //  this.menuTabIndex = this.navParams.data.tabIndex || 0;
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad TabsPage');
+  }
+
+  isActive(page){
+
   }
 
 }
