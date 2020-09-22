@@ -7,10 +7,9 @@ import firebase from 'firebase';
 @Injectable()
 export class UserProvider {
 
-  private firedata = firebase.database().ref('/chatusers')
-  private defaultProfilePic = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAHBAMAAADzDtBxAAAAD1BMVEUAAAAAAAAAAAAAAAAAAABPDueNAAAABXRSTlMUCS0gBIh/TXEAAAAaSURBVAjXYxCEAgY4UIICBmMogMsgFLtAAQCNSwXZKOdPxgAAAABJRU5ErkJggg=='
-  // "https://www.pngitem.com/pimgs/m/146-1468843_profile-icon-orange-png-transparent-png.png"
-
+  private firedata = firebase.database().ref('/users')
+  //private defaultProfilePic = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAHBAMAAADzDtBxAAAAD1BMVEUAAAAAAAAAAAAAAAAAAABPDueNAAAABXRSTlMUCS0gBIh/TXEAAAAaSURBVAjXYxCEAgY4UIICBmMogMsgFLtAAQCNSwXZKOdPxgAAAABJRU5ErkJggg=='
+  private defaultProfilePic =  "https://www.pngitem.com/pimgs/m/146-1468843_profile-icon-orange-png-transparent-png.png"
   constructor(public aFireAuth : AngularFireAuth) {
    // console.log('Hello UserProvider Provider');
   }
@@ -66,7 +65,7 @@ export class UserProvider {
         displayName: this.aFireAuth.auth.currentUser.displayName,
         photoURL: imageUrl,
       }).then(()=>{
-        firebase.database().ref('/chatusers/'+firebase.auth().currentUser.uid).update({
+        firebase.database().ref('/users/'+firebase.auth().currentUser.uid).update({
           photoURL: imageUrl,
           uid: firebase.auth().currentUser.uid
         })
@@ -96,6 +95,10 @@ export class UserProvider {
     });
 
     return promise;
+  }
+
+  getUserDefaultProfilePic(){
+    return this.defaultProfilePic
   }
 
 }

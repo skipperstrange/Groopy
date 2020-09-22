@@ -18,7 +18,7 @@ import { UserProvider } from '../../providers/user/user';
 export class ProfilePicPage {
 
   moveOn = true
-  imgUrl: 'https://www.pngitem.com/pimgs/m/146-1468843_profile-icon-orange-png-transparent-png.png'
+  imgUrl: any
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
     public imageService: MediaHandlerProvider,
@@ -30,6 +30,10 @@ export class ProfilePicPage {
 
   ionViewDidLoad() {
     //console.log('ionViewDidLoad ProfilePicPage');
+  }
+
+  ionViewDidEnter(){
+    this.imgUrl = this.userService.getUserDefaultProfilePic()
   }
 
   chooseImg(){

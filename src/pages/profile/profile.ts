@@ -30,7 +30,7 @@ export class ProfilePage {
     const toast = this.toastCtrl.create({
       duration: 3000,
       showCloseButton: true,
-      position: "top"
+      position: "bottom"
     });
     const loader = this.loaderCtrl.create({duration: 400});
 

@@ -36,7 +36,7 @@ export class PasswordResetPage {
     const toast = this.toastCtrl.create({
       duration: 5000,
       showCloseButton: true,
-      position: "top"
+      position: "bottom"
     })
 
     const loader = this.loadCtrl.create({})
