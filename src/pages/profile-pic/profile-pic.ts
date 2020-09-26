@@ -33,7 +33,7 @@ export class ProfilePicPage {
   }
 
   ionViewDidEnter(){
-    this.imgUrl = this.userService.getUserDefaultProfilePic()
+    this.imgUrl = this.userService.getUserDefaultProfilePic
   }
 
   chooseImg(){
@@ -79,12 +79,13 @@ export class ProfilePicPage {
     })
 
     this.userService.updateImage(this.imgUrl).then((res: any)=>{
-      loader.dismiss()
 
+      loader.dismiss()
       this.navCtrl.setRoot('TabsPage')
     }).catch((err)=>{
       loader.dismiss()
       toast.setMessage(err)
+      toast.present()
     })
 
   }

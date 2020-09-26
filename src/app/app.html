@@ -1,4 +1,4 @@
-<ion-menu [content]="content">
+<ion-menu [content]="content" *ngIf="loggedIn">
   <!--
   <ion-header>
     <ion-toolbar>
@@ -12,8 +12,14 @@
         <ion-icon [name]="page.icon" [color]="isActive(page)"></ion-icon>
         {{page.title}}
       </button>
-
     </ion-list>
+<!--
+    <ion-row class="bottom">
+      <button ion-button block (click)="logout()">
+        Logout
+      </button>
+    </ion-row>
+-->
   </ion-content>
 </ion-menu>
 

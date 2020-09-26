@@ -11,6 +11,8 @@ import { FileChooser } from '@ionic-native/file-chooser';
 import { MyApp } from './app.component';
 //import { HomePage } from '../pages/home/home';
 import { LoginPage  } from '../pages/login/login';
+
+import { LoginPageModule  } from '../pages/login/login.module';
 import { ProfilePageModule } from '../pages/profile/profile.module';
 import { ProfilePicPageModule } from '../pages/profile-pic/profile-pic.module';
 import { GroupsPageModule } from '../pages/groups/groups.module';
@@ -35,7 +37,7 @@ import { MediaHandlerProvider } from '../providers/media-handler/media-handler';
 @NgModule({
   declarations: [
     MyApp,
-    LoginPage,
+
   ],
   imports: [
   AngularFireModule.initializeApp(firebaseConfig),
@@ -47,6 +49,7 @@ import { MediaHandlerProvider } from '../providers/media-handler/media-handler';
   PasswordResetPageModule,
   ProfilePicPageModule,
   BrowserModule,
+  LoginPageModule,
     IonicModule.forRoot(MyApp)
   ],
   bootstrap: [IonicApp],

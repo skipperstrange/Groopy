@@ -101,4 +101,31 @@ export class UserProvider {
     return this.defaultProfilePic
   }
 
+  updateiDisplayName(newName){
+    var promise = new Promise((resolve, reject)=>{
+      this.aFireAuth.auth.currentUser.updateProfile({
+        displayName: newName,
+        photoURL: this.aFireAuth.auth.currentUser.photoURL,
+      })
+      .then(()=>{
+        this.firedata.child(this.aFireAuth.auth.currentUser.uid).set({
+          displayName: newName,
+          photoURL: this.aFireAuth.auth.currentUser.photoURL,
+          uid: firebase.auth().currentUser.uid
+        })
+        .then(()=>{
+          resolve({success:true})
+        })
+        .catch((err)=>{
+          reject(err)
+        })
+      })
+      .catch((err)=>{
+        reject(err)
+      })
+    });
+    return promise
+  }
+
+
 }
