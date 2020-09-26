@@ -47,7 +47,6 @@ export class ProfilePicPage {
     loader.present()
 
     this.imageService.uploadImage().then((uploadedUrl: any)=>{
-      console.log(uploadedUrl)
       this.zone.run(()=>{
         this.imgUrl = uploadedUrl
         this.moveOn = false

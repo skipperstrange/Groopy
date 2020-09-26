@@ -12,7 +12,6 @@ import  firebase from 'firebase/app';
 export class MyApp {
   rootPage:any = LoginPage;
   menuTabIndex: number
-  loggedIn: boolean
 
 
   @ViewChild(Nav) nav: Nav
@@ -31,11 +30,7 @@ export class MyApp {
       // Here you can do any higher level native things you might need.
       statusBar.styleDefault();
       splashScreen.hide();
-      if((firebase.auth().currentUser)){
-        this.loggedIn = true;
-      }else{
-        this.loggedIn = false;
-      }
+
 
     });
   }

@@ -3,6 +3,7 @@ import { IonicPage, NavController, NavParams, ToastController, LoadingController
 import { UserProvider } from '../../providers/user/user';
 import { Placeholder } from '@angular/compiler/src/i18n/i18n_ast';
 import firebase from 'firebase/app';
+import { MediaHandlerProvider } from '../../providers/media-handler/media-handler';
 
 @IonicPage()
 @Component({
@@ -16,8 +17,8 @@ export class ProfilePage {
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
     public userService: UserProvider, public zone: NgZone,
-    public toastCtrl: ToastController, public loaderCtrl: LoadingController,
-    public alertCtrl: AlertController){
+    public toastCtrl: ToastController, public loadCtrl: LoadingController,
+    public alertCtrl: AlertController, public imageService: MediaHandlerProvider){
   }
 
   ionViewDidLoad() {
@@ -34,7 +35,7 @@ export class ProfilePage {
       showCloseButton: true,
       position: "bottom"
     });
-    const loader = this.loaderCtrl.create({duration: 400});
+    const loader = this.loadCtrl.create({duration: 400});
 
    this.userService.getUserDetails().then((res: any)=>{
     this.displayName = res.displayName
@@ -50,7 +51,33 @@ export class ProfilePage {
   }
 
   editImage(){
+    const toast = this.toastCtrl.create({
+      duration: 3000,
+      showCloseButton: true,
+    })
 
+    const loader = this.loadCtrl.create({duration: 1000})
+
+
+    this.imageService.uploadImage().then((uploadedUrl: any)=>{
+      this.userService.updateImage(uploadedUrl).then((res: any)=>{
+        if(res.success){
+          this.zone.run(()=>{
+            this.avatar = uploadedUrl
+          })
+          toast.setMessage("Successfully update profile image.")
+          toast.present()
+        }
+      })
+      .catch((err)=>{
+        toast.setMessage(err)
+          toast.present()
+      })
+    })
+    .catch((err)=>{
+      toast.setMessage(err)
+      toast.present()
+    })
   }
 
   editDisplayName(){
@@ -77,11 +104,11 @@ export class ProfilePage {
                   toast.setMessage("Your display name has been successfully updated.")
                   toast.present()
                 }
-                else{
-                  alertStatus.setTitle("Failed!")
-                  toast.setMessage("Could not save changes. Please try again later.")
-                  toast.present()
-                }
+                //else{
+                 // alertStatus.setTitle("Failed!")
+                 // toast.setMessage("Could not save changes. Please try again later.")
+                 // toast.present()
+               // }
               })
               .catch((err)=>{
                   toast.setMessage(err)
@@ -92,7 +119,6 @@ export class ProfilePage {
         }
       ]
     })
-
     alertStatus.present()
 
   }
