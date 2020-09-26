@@ -98,7 +98,6 @@ export class ProfilePage {
               .then((res: any)=>{
 
                 if(res.success){
-                  console.log(res)
                   this.displayName = data.displayName
                   alertStatus.setTitle("Done!")
                   toast.setMessage("Your display name has been successfully updated.")

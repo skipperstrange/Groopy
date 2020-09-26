@@ -9,11 +9,18 @@
     </ion-buttons>
 
     <ion-title>Chats</ion-title>
-  </ion-navbar>
 
+  </ion-navbar>
+  <ion-searchbar
+  [(ngModel)]="searchChats" (ionInput)="search($event)">
+</ion-searchbar>
 </ion-header>
 
 
 <ion-content padding>
 
+
+  <ion-fab bottom right>
+    <button ion-fab (click)="addBuddy()" color="app-primary"><ion-icon name="person-add"></ion-icon></button>
+  </ion-fab>
 </ion-content>

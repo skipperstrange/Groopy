@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from 'angularfire2/auth';
+import { AngularFireDatabase, FirebaseListObservable } from "angularfire2/database";
 import firebase from 'firebase';
 
 
@@ -10,7 +11,7 @@ export class UserProvider {
   private firedata = firebase.database().ref('/users')
   //private defaultProfilePic = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAHBAMAAADzDtBxAAAAD1BMVEUAAAAAAAAAAAAAAAAAAABPDueNAAAABXRSTlMUCS0gBIh/TXEAAAAaSURBVAjXYxCEAgY4UIICBmMogMsgFLtAAQCNSwXZKOdPxgAAAABJRU5ErkJggg=='
   private defaultProfilePic =  "https://www.pngitem.com/pimgs/m/146-1468843_profile-icon-orange-png-transparent-png.png"
-  constructor(public aFireAuth : AngularFireAuth) {
+  constructor(public aFireAuth : AngularFireAuth, public db:AngularFireDatabase) {
    // console.log('Hello UserProvider Provider');
   }
 
@@ -127,5 +128,17 @@ export class UserProvider {
     return promise
   }
 
+  searchUser(q): FirebaseListObservable {
+
+     return this.db.list('/users',{
+        query: {
+          orderByChild: 'displaName',
+        }
+      })
+  }
+
+  getUsers(){
+
+  }
 
 }
