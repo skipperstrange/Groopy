@@ -26,6 +26,7 @@ export class ProfilePicPage {
     public toastCtrl: ToastController,
     public loadCtrl: LoadingController,
     public zone: NgZone ) {
+      this.imgUrl = ''
   }
 
   ionViewDidLoad() {
@@ -33,7 +34,7 @@ export class ProfilePicPage {
   }
 
   ionViewDidEnter(){
-    this.imgUrl = this.userService.getUserDefaultProfilePic
+    this.imgUrl = "https://www.pngitem.com/pimgs/m/146-1468843_profile-icon-orange-png-transparent-png.png"
   }
 
   chooseImg(){

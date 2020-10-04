@@ -38,6 +38,7 @@ export class ProfilePage {
     const loader = this.loadCtrl.create({duration: 400});
 
    this.userService.getUserDetails().then((res: any)=>{
+     console.log(res);
     this.displayName = res.displayName
     this.zone.run(()=>{
     this.avatar = res.photoURL
@@ -94,7 +95,7 @@ export class ProfilePage {
         {text: "Cancel", role: "cancel", handler: data=>{}},
         {text: "Save", role: "cance;", handler: data=>{
             if(data.displayName){
-              this.userService.updateiDisplayName(data.displayName)
+              this.userService.updateDisplayName(data.displayName)
               .then((res: any)=>{
 
                 if(res.success){

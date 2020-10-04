@@ -15,7 +15,7 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 })
 export class ChatsPage {
 
-  searchChats = ''
+  searchChats : string
 
   constructor(public navCtrl: NavController, public navParams: NavParams) {
   }
@@ -26,7 +26,7 @@ export class ChatsPage {
 
 
   addBuddy(){
-
+    this.navCtrl.push('BuddiesPage')
   }
 
   search($e){

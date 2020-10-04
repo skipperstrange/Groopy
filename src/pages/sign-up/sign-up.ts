@@ -22,6 +22,9 @@ export class SignUpPage {
   newUser = {} as userInterface;
   public regForm: FormGroup
 
+  loader
+  toast = null
+
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
     public userService: UserProvider,
@@ -39,51 +42,39 @@ export class SignUpPage {
     console.log('ionViewDidLoad SignUpPage');
   }
 
-  signup(){
-    const toast = this.toastCtrl.create({
-      duration: 5000,
-      showCloseButton: true,
-      position: "bottom"
-    });
-    const loader = this.loaderCtrl.create({
-      content: "",
-    });
 
-    loader.present();
+
+  signup(){
+    this.showLoading();
 
     if(this.newUser.displayName == undefined){
-      loader.dismiss();
-      toast.setMessage("Display name cannot be empty")
-      toast.present();
+      this.dismissLoading();
+      this.showToasting("Display name cannot be empty");
       return;
     }
     else if( this.newUser.displayName.length < 3){
-      loader.dismiss();
-      toast.setMessage("Display should at least 3 characters")
-      toast.present();
+      this.dismissLoading();
+      this.showToasting("Display should at least 3 characters");
     }
     else if(this.newUser.email == undefined){
-      loader.dismiss();
-      toast.setMessage("Email cannot be empty")
-      toast.present();
+      this.dismissLoading();
+      this.showToasting("Email cannot be empty");
       return;
     }
     else if(this.newUser.password == undefined){
-      loader.dismiss();
-      toast.setMessage("Password cannot be empty")
-      toast.present();
+      this.dismissLoading();
+      this.showToasting("Password cannot be empty");
       return;
     } else {
       this.userService.createUser(this.newUser).then((res: any)=>{
-        if(res.success)
-        loader.dismiss();
+        this.dismissLoading();
+        if(res.success){
         console.log(res)
           this.navCtrl.push('ProfilePicPage')
+        }
       }).catch((err)=>{
-        loader.dismiss();
-        toast.setMessage(err)
-        toast.present()
-
+        this.dismissLoading();
+        this.showToasting(err)
       })
     }
 
@@ -92,5 +83,41 @@ export class SignUpPage {
   login(){
     this.navCtrl.pop();
   }
+  showLoading() {
+    if(!this.loader){
+        this.loader = this.loaderCtrl.create({
+          content: "", duration:1000
+        });
+        this.loader.present();
+    }
+  }
+
+  dismissLoading(){
+    if(this.loader){
+        this.loader.dismiss();
+        this.loader = null;
+    }
+  }
+
+    showToasting(msg){
+
+      if(!this.toast){
+        this.toast = this.toastCtrl.create({
+          duration: 5000,
+          showCloseButton: true,
+          position: "bottom"
+        })
+        this.toast.setMessage(msg)
+        this.toast.present();
+        this.toast = null;
+      }
+    }
+
+    dismissToasting(){
+      if(this.toast){
+          this.toast.dismiss();
+          this.toast = null;
+      }
+    }
 
 }

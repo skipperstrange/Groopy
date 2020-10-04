@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from 'angularfire2/auth';
-import { AngularFireDatabase, FirebaseListObservable } from "angularfire2/database";
+import { AngularFireDatabase } from "angularfire2/database";
 import firebase from 'firebase';
 
 
@@ -28,7 +28,8 @@ export class UserProvider {
             this.firedata.child(this.aFireAuth.auth.currentUser.uid).set({
               uid: this.aFireAuth.auth.currentUser.uid,
               displayName: newUser.displayName,
-              photoURL: this.defaultProfilePic
+              photoURL: this.defaultProfilePic,
+              bio: "Hi there!! I'm new"
             }).then(()=> {
               resolve({success: true})
             }).catch((err) => {
@@ -102,7 +103,7 @@ export class UserProvider {
     return this.defaultProfilePic
   }
 
-  updateiDisplayName(newName){
+  updateDisplayName(newName){
     var promise = new Promise((resolve, reject)=>{
       this.aFireAuth.auth.currentUser.updateProfile({
         displayName: newName,
@@ -128,17 +129,24 @@ export class UserProvider {
     return promise
   }
 
-  searchUser(q): FirebaseListObservable {
 
-     return this.db.list('/users',{
-        query: {
-          orderByChild: 'displaName',
+  getAllUsers(){
+    var promise = new Promise((resolve, reject)=>{
+      this.firedata.orderByChild('displayName').once('value', (snapshot)=>{
+        let userData = snapshot.val()
+        let tempArr = []
+        console.log(userData)
+        for(var key in userData){
+          tempArr.push(userData[key])
+
         }
+        resolve(tempArr);
+      }).catch((err)=>{
+        reject(err)
       })
+    });
+    return promise
   }
 
-  getUsers(){
-
-  }
 
 }

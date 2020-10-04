@@ -26,10 +26,10 @@ import { firebaseConfig } from "./app.firebaseconfig";
 import { AngularFireModule } from 'angularfire2';
 // for AngularFireDatabase
 import { AngularFireDatabaseModule } from 'angularfire2/database';
-import { AngularFireDatabase, FirebaseObjectObservable } from 'angularfire2/database';
+
+
 // for AngularFireAuth
 import { AngularFireAuthModule } from 'angularfire2/auth';
-import { AngularFireAuth } from 'angularfire2/auth';
 import { AuthProvider } from '../providers/auth/auth';
 import { UserProvider } from '../providers/user/user';
 import { MediaHandlerProvider } from '../providers/media-handler/media-handler';
@@ -40,7 +40,7 @@ import { MediaHandlerProvider } from '../providers/media-handler/media-handler';
 
   ],
   imports: [
-  AngularFireModule.initializeApp(firebaseConfig),
+AngularFireModule.initializeApp(firebaseConfig),
   AngularFireDatabaseModule,
   AngularFireAuthModule,
   ChatsPageModule,
