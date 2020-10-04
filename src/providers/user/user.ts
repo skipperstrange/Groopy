@@ -138,7 +138,6 @@ export class UserProvider {
         console.log(userData)
         for(var key in userData){
           tempArr.push(userData[key])
-
         }
         resolve(tempArr);
       }).catch((err)=>{

@@ -27,10 +27,7 @@ export class BuddiesPage {
   lastKeyPress = 0
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public userService: UserProvider) {
-      this.userService.getAllUsers().then(res=>{
-        this.Buddies =res
-      });
-      console.log(this.Buddies)
+  
   }
 
   ionViewDidLoad() {
@@ -38,7 +35,17 @@ export class BuddiesPage {
   }
 
   ngOnInit(){
+    this.initializeBuddies()
+    console.log(this.Buddies)
+  }
 
+  initializeBuddies(){
+    this.userService.getAllUsers().then(res=>{
+      this.Buddies =res
+    })
+    .catch((err)=>{
+      console.log(err)
+    });
   }
 
   async search($event){
@@ -57,8 +64,11 @@ export class BuddiesPage {
       })
 
     }
-    console.log(this.foundBuddies)
     this.lastKeyPress = $event.timeStamp
+  }
+
+  sendReq(buddy){
+    
   }
 
 }
