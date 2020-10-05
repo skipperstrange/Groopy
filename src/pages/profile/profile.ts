@@ -93,7 +93,7 @@ export class ProfilePage {
       inputs: [{name: "displayName", placeholder: "Display Name", value: this.displayName}],
       buttons:[
         {text: "Cancel", role: "cancel", handler: data=>{}},
-        {text: "Save", role: "cance;", handler: data=>{
+        {text: "Save", role: "cancel", handler: data=>{
             if(data.displayName){
               this.userService.updateDisplayName(data.displayName)
               .then((res: any)=>{

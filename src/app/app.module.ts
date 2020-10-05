@@ -33,6 +33,7 @@ import { AngularFireAuthModule } from 'angularfire2/auth';
 import { AuthProvider } from '../providers/auth/auth';
 import { UserProvider } from '../providers/user/user';
 import { MediaHandlerProvider } from '../providers/media-handler/media-handler';
+import { RequestProvider } from '../providers/request/request';
 
 @NgModule({
   declarations: [
@@ -67,6 +68,7 @@ AngularFireModule.initializeApp(firebaseConfig),
     AuthProvider,
     UserProvider,
     MediaHandlerProvider,
+    RequestProvider,
   ]
 })
 export class AppModule {}

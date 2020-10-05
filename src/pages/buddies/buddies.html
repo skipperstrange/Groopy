@@ -6,11 +6,11 @@
 -->
 <ion-header >
 
-  <ion-navbar color="app-primary" hideBackButton="false">
+  <ion-navbar color="app-primary" hideBackButton="false" >
     <ion-title>Add Buddy</ion-title>
   </ion-navbar>
 
-<ion-searchbar (keydown)="search($event)">
+<ion-searchbar (keydown)="search($event)" [disabled]="disableSearch ? true : null">
 </ion-searchbar>
 
 </ion-header>
@@ -26,7 +26,7 @@
       </ion-avatar>
     <h2>{{friend.displayName}}</h2>
     <p>
-      {{friend.displayName}}
+      {{friend.bio}}
     </p>
     </ion-item>
     <ion-item-options slide="left">
@@ -42,7 +42,5 @@
     <hr>
     <h2 color="app-disabled" style="color:#cfcfcf">Search for buddies</h2>
   </ion-item>
-
-
 
 </ion-content>

@@ -1,8 +1,11 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ToastController, AlertController  } from 'ionic-angular';
 import { Subject } from 'rxjs/Subject';
 import { Observable } from "rxjs/Rx";
 import { UserProvider } from '../../providers/user/user';
+import { RequestProvider } from "../../providers/request/request";
+import { FriendRequest } from '../../models/interfaces/friendRequestInterface';
+import firebase from 'firebase';
 
 /**
  * Generated class for the BuddiesPage page.
@@ -18,16 +21,22 @@ import { UserProvider } from '../../providers/user/user';
 })
 export class BuddiesPage {
 
+  friendRequest = {} as FriendRequest;
   foundBuddies = []
+  disableSearch = true
   Buddies : any
   startAt = new Subject()
   endAt = new Subject()
   startAtObs = this.startAt.asObservable()
   endAtObs = this.endAt.asObservable()
   lastKeyPress = 0
-
-  constructor(public navCtrl: NavController, public navParams: NavParams, public userService: UserProvider) {
-  
+  toast
+  myId
+ 
+  constructor(public navCtrl: NavController, public navParams: NavParams, 
+    public userService: UserProvider, public toastCtrl: ToastController,public alertCtrl: AlertController, public reqService: RequestProvider  ) {
+      this.initializeBuddies()
+      this.myId = firebase.auth().currentUser.uid;
   }
 
   ionViewDidLoad() {
@@ -35,20 +44,23 @@ export class BuddiesPage {
   }
 
   ngOnInit(){
-    this.initializeBuddies()
-    console.log(this.Buddies)
   }
 
   initializeBuddies(){
     this.userService.getAllUsers().then(res=>{
       this.Buddies =res
     })
+    .then(()=>{
+      this.disableSearch = false
+      console.log(this.Buddies)
+      console.log("Loaded buddies")
+    })
     .catch((err)=>{
       console.log(err)
     });
   }
 
-  async search($event){
+   search($event){
 
       let q = $event.target.value
       if(!q || q == ''){
@@ -68,7 +80,35 @@ export class BuddiesPage {
   }
 
   sendReq(buddy){
+   this.friendRequest.sender = this.myId;
+   this.friendRequest.reciever = buddy.uid;
     
+   if(this.friendRequest.sender == this.friendRequest.reciever){
+    this.toast = this.toastCtrl.create({
+      duration: 3000,
+      showCloseButton: true,
+      message: "Sorry. Can't send a request to yourself!!"
+    });
+    this.toast.present();
+    return
+   }else{
+     let  reqAlert = this.alertCtrl.create({
+     title: "Friend request sent.",
+     message:'Request sent to '+buddy.displayName,
+     buttons: [
+       {
+         text: "Save", role: "cancel", handler: data=>{
+           console.log(this.friendRequest);
+         }
+        }
+     ]
+     })
+     reqAlert.present()
+   }
+
+   
+  
+                        
   }
 
 }

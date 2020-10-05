@@ -135,10 +135,10 @@ export class UserProvider {
       this.firedata.orderByChild('displayName').once('value', (snapshot)=>{
         let userData = snapshot.val()
         let tempArr = []
-        console.log(userData)
         for(var key in userData){
           tempArr.push(userData[key])
         }
+        console.log(tempArr)
         resolve(tempArr);
       }).catch((err)=>{
         reject(err)
