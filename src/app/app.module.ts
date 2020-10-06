@@ -9,7 +9,6 @@ import { FileChooser } from '@ionic-native/file-chooser';
 
 
 import { MyApp } from './app.component';
-//import { HomePage } from '../pages/home/home';
 import { LoginPage  } from '../pages/login/login';
 
 import { LoginPageModule  } from '../pages/login/login.module';
@@ -17,6 +16,7 @@ import { ProfilePageModule } from '../pages/profile/profile.module';
 import { ProfilePicPageModule } from '../pages/profile-pic/profile-pic.module';
 import { GroupsPageModule } from '../pages/groups/groups.module';
 import { ChatsPageModule } from '../pages/chats/chats.module';
+import { HomePageModule } from '../pages/home/home.module';
 import { PasswordResetPageModule } from '../pages/password-reset/password-reset.module';
 
 
@@ -44,6 +44,7 @@ import { RequestProvider } from '../providers/request/request';
 AngularFireModule.initializeApp(firebaseConfig),
   AngularFireDatabaseModule,
   AngularFireAuthModule,
+  HomePageModule,
   ChatsPageModule,
   GroupsPageModule,
   ProfilePageModule,

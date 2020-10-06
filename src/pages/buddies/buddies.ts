@@ -7,6 +7,7 @@ import { RequestProvider } from "../../providers/request/request";
 import { FriendRequest } from '../../models/interfaces/friendRequestInterface';
 import firebase from 'firebase';
 
+
 /**
  * Generated class for the BuddiesPage page.
  *
@@ -101,7 +102,7 @@ export class BuddiesPage {
      message:'Request will be sent to '+buddy.displayName,
      buttons: [
        {
-         text: "Save", role: "save", handler: data=>{
+         text: "Send", role: "save", handler: data=>{
            this.reqGoAhead = true
           }
       },
@@ -131,11 +132,5 @@ export class BuddiesPage {
        })
       }
      }
-   }
-
-   
-  
-                        
+   }                    
   }
-
-}

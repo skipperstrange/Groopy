@@ -1,3 +1,4 @@
+import { HomePage } from '../home/home';
 import { Component } from '@angular/core';
 import { IonicPage,  } from 'ionic-angular';
 //import { menuInterface } from '../models/interfaces/menuInterface';
@@ -22,6 +23,7 @@ import { ProfilePage  } from '../profile/profile';
 export class TabsPage {
 
   tabs = [
+    { title: "Home", root: HomePage, icon: "home" },
     { title: "Groups", root: GroupsPage, icon: "contacts" },
     { title: "Chats", root: ChatsPage, icon: "chatboxes" },
     { title: "Profile", root: ProfilePage, icon: "contact" }
