@@ -22,7 +22,7 @@ import firebase from 'firebase';
 export class BuddiesPage {
 
   friendRequest = {} as FriendRequest;
-  foundBuddies = []
+  foundBuddies = [] 
   disableSearch = true
   Buddies : any
   startAt = new Subject()
@@ -32,11 +32,13 @@ export class BuddiesPage {
   lastKeyPress = 0
   toast
   myId
+  reqGoAhead
  
   constructor(public navCtrl: NavController, public navParams: NavParams, 
-    public userService: UserProvider, public toastCtrl: ToastController,public alertCtrl: AlertController, public reqService: RequestProvider  ) {
+    public userService: UserProvider, public toastCtrl: ToastController,public alertCtrl: AlertController, public requestService: RequestProvider  ) {
       this.initializeBuddies()
       this.myId = firebase.auth().currentUser.uid;
+      this.reqGoAhead = false
   }
 
   ionViewDidLoad() {
@@ -47,6 +49,7 @@ export class BuddiesPage {
   }
 
   initializeBuddies(){
+    this.Buddies = []
     this.userService.getAllUsers().then(res=>{
       this.Buddies =res
     })
@@ -92,18 +95,42 @@ export class BuddiesPage {
     this.toast.present();
     return
    }else{
+     
      let  reqAlert = this.alertCtrl.create({
-     title: "Friend request sent.",
-     message:'Request sent to '+buddy.displayName,
+     title: "Friend request.",
+     message:'Request will be sent to '+buddy.displayName,
      buttons: [
        {
-         text: "Save", role: "cancel", handler: data=>{
-           console.log(this.friendRequest);
-         }
-        }
+         text: "Save", role: "save", handler: data=>{
+           this.reqGoAhead = true
+          }
+      },
+        {text: "Cancel", role: 'cancel'}
      ]
      })
+
      reqAlert.present()
+
+     if(this.reqGoAhead){
+      this.toast = this.toastCtrl.create({
+        duration: 3000,
+        showCloseButton: true,
+      });
+
+      console.log(this.friendRequest);
+       this.requestService.sendFriendRequest(this.friendRequest)
+       .then(()=>{
+         let sentUser = this.foundBuddies.indexOf(this.friendRequest.reciever)
+         this.foundBuddies.splice(sentUser,1)
+        this.toast.setMessage("Request sent to "+buddy.displayName)
+        this.toast.present();
+       })
+       .catch(err=>{
+         this.toast.setMessage("Could not send. Please try later.")
+        this.toast.present();
+       })
+      }
+     }
    }
 
    
