@@ -1,5 +1,9 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, Events } from 'ionic-angular';
+import { RequestProvider } from '../../providers/request/request';
+import { UserProvider } from '../../providers/user/user';
+
+
 
 /**
  * Generated class for the ChatsPage page.
@@ -16,12 +20,28 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 export class ChatsPage {
 
   searchChats : string
+  myRequests: any
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  constructor(public navCtrl: NavController, public navParams: NavParams,
+    public requestService: RequestProvider, public userService: UserProvider,
+    public events: Events) {
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad ChatsPage');
+  }
+
+  ionViewWillEnter(){
+  this.requestService.getFriendRequests() 
+      this.events.subscribe('gotFriendRequests', ()=>{
+      this.myRequests = []
+      this.myRequests =   this.requestService.friendRequests 
+      console.log(this.myRequests)
+  })
+  }
+
+  ionDidLeaveView(){
+    this.events.unsubscribe('gotFriendRequests')
   }
 
 
@@ -30,7 +50,8 @@ export class ChatsPage {
   }
 
   search($e){
-
+    
   }
 
 }
+  

@@ -56,7 +56,6 @@ export class BuddiesPage {
     })
     .then(()=>{
       this.disableSearch = false
-      console.log(this.Buddies)
       console.log("Loaded buddies")
     })
     .catch((err)=>{
@@ -103,34 +102,32 @@ export class BuddiesPage {
      buttons: [
        {
          text: "Send", role: "save", handler: data=>{
-           this.reqGoAhead = true
+          console.log(this.reqGoAhead)
+            this.toast = this.toastCtrl.create({
+            duration: 3000,
+            showCloseButton: true,
+          })
+    
+           this.requestService.sendFriendRequest(this.friendRequest)
+           .then(()=>{
+             let sentUser = this.foundBuddies.indexOf(this.friendRequest.reciever)
+             this.foundBuddies.splice(sentUser,1)
+            this.toast.setMessage("Request sent to "+buddy.displayName)
+            this.toast.present();
+           })
+           .catch(err=>{
+             this.toast.setMessage("Could not send. Please try later.")
+            this.toast.present();
+           })
+          
           }
       },
         {text: "Cancel", role: 'cancel'}
      ]
      })
-
+      console.log(this.reqGoAhead)
      reqAlert.present()
-
-     if(this.reqGoAhead){
-      this.toast = this.toastCtrl.create({
-        duration: 3000,
-        showCloseButton: true,
-      });
-
-      console.log(this.friendRequest);
-       this.requestService.sendFriendRequest(this.friendRequest)
-       .then(()=>{
-         let sentUser = this.foundBuddies.indexOf(this.friendRequest.reciever)
-         this.foundBuddies.splice(sentUser,1)
-        this.toast.setMessage("Request sent to "+buddy.displayName)
-        this.toast.present();
-       })
-       .catch(err=>{
-         this.toast.setMessage("Could not send. Please try later.")
-        this.toast.present();
-       })
-      }
+      
      }
    }                    
   }
