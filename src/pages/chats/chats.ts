@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, Events } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, Events, AlertController } from 'ionic-angular';
 import { RequestProvider } from '../../providers/request/request';
 import { UserProvider } from '../../providers/user/user';
 
@@ -21,23 +21,20 @@ export class ChatsPage {
 
   searchChats : string
   myRequests: any
+  //requests = false
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
     public requestService: RequestProvider, public userService: UserProvider,
-    public events: Events) {
+    public events: Events, public alertCtrl: AlertController) {
+
   }
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad ChatsPage');
+  ngOnInit(){
+
   }
 
   ionViewWillEnter(){
-  this.requestService.getFriendRequests() 
-      this.events.subscribe('gotFriendRequests', ()=>{
-      this.myRequests = []
-      this.myRequests =   this.requestService.friendRequests 
-      console.log(this.myRequests)
-  })
+   this.loadRequests()
   }
 
   ionDidLeaveView(){
@@ -50,8 +47,40 @@ export class ChatsPage {
   }
 
   search($e){
-    
+
+  }
+
+  loadRequests(){
+    this.requestService.getFriendRequests()
+      this.events.subscribe('gotFriendRequests', ()=>{
+      this.myRequests = []
+      this.myRequests =   this.requestService.friendRequests
+   //   this.requests = true
+      console.log(this.myRequests)
+  })
+  }
+
+  acceptRequest(request){
+    this.requestService.acceptRequest(request).then(()=>{
+      let alert = this.alertCtrl.create({
+        title: "New friend added!",
+        message: "Tap on friend to chat",
+        buttons: ['Ok']
+      })
+      alert.present()
+    })
+    .catch((err)=>{
+      console.log(err)
+    })
+  }
+
+  deleteRequest(request){
+    this.requestService.deleteRequest(request).then(()=>{
+      this.navCtrl.pop()
+    })
+    .catch((err)=>{
+      console.log(err)
+    })
   }
 
 }
-  

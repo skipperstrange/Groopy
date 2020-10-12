@@ -14,16 +14,19 @@ import { UserProvider } from '../user/user';
 export class RequestProvider {
 
   firedata = firebase.database().ref('/friendrequests')
+  firefriends =  firebase.database().ref('/friend')
   friendRequests
   constructor(public userService: UserProvider, public event: Events) {
     console.log('Hello RequestProvider Provider');
   }
 
-  
+
   sendFriendRequest(req: FriendRequest){
-  
   var promise = new Promise((resolve, reject)=>{
-    this.firedata.child(req.reciever).push({
+    this.checkFriendsRequest(req).then((res: any)=>{
+      console.log(res)
+    })
+    /*this.firedata.child(req.reciever).push({
       sender: req.sender
       })
       .then(()=>{
@@ -32,6 +35,7 @@ export class RequestProvider {
       .catch(err=>{
         reject(false)
       })
+      */
     })
     return promise
   }
@@ -53,12 +57,82 @@ export class RequestProvider {
                   this.friendRequests.push(users[key])
                 }
               }
-             
+
         })
-        
+
     })
       this.event.publish('gotFriendRequests')
   }
 
+  acceptRequest(request){
+
+    var promise:any = new Promise((resolve, reject)=>{
+      this.firefriends.child(firebase.auth().currentUser.uid).push({
+      uid: request.uid
+    })
+    .then(()=>{
+      this.firefriends.child(request.uid).push({
+        uid: firebase.auth().currentUser.uid
+      })
+    })
+    .then(()=>{
+      this.deleteRequest(request)
+      .then(()=>{
+        resolve(true)
+      })
+      .catch(err=>{
+        reject(err)
+        })
+    })
+    .catch(err=>{
+      reject(err)
+      })
+    })
+
+    return promise
+  }
+
+  deleteRequest(request){
+    var promise = new Promise((resolve, reject)=>{
+      this.firedata.child(firebase.auth().currentUser.uid).orderByChild('sender').equalTo(request.uid ).once('value', snapshot=>{
+      let tempStore = snapshot.val()
+      console.log(tempStore)
+      let key = Object.keys(tempStore)
+      console.log(key)
+      this.firedata.child(firebase.auth().currentUser.uid).child(key[0]).remove().then(()=>{
+        console.log("deleting")
+
+        this.deleteRequest(request).then(()=>{
+          console.log("deleted")
+          resolve(true)
+        })
+        .catch((err)=>{
+          reject(err)
+        })
+      })
+      .catch((err)=>{
+        reject(err)
+      })
+    })
+    .catch((err)=>{
+      reject(err)
+    })
+    })
+    return promise
+  }
+
+  checkFriendsRequest(request: FriendRequest){
+    var promise = new Promise((resolve)=>{
+    this.firedata.child(request.reciever).orderByChild('sender').once('value', snapshot=>{
+      let key = Object.keys(snapshot.val())
+      if(key[0] === request.sender){
+        resolve(true)
+      }else{
+        resolve(false)
+      }
+      })
+    })
+    return promise
+  }
 
 }

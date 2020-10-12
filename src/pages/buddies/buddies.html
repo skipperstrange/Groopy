@@ -6,8 +6,10 @@
 -->
 <ion-header >
 
-  <ion-navbar color="app-primary" hideBackButton="false" >
-    <ion-title>Add Buddy</ion-title>
+  <ion-navbar color="app-primary" hideBackButton="false">
+    <button (click)="goBack()">
+      <ion-icon name="arrow-back">  </ion-icon>
+  </button>
   </ion-navbar>
 
 <ion-searchbar (keydown)="search($event)" [disabled]="disableSearch ? true : null">

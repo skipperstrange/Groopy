@@ -23,7 +23,7 @@ import firebase from 'firebase';
 export class BuddiesPage {
 
   friendRequest = {} as FriendRequest;
-  foundBuddies = [] 
+  foundBuddies = []
   disableSearch = true
   Buddies : any
   startAt = new Subject()
@@ -33,13 +33,11 @@ export class BuddiesPage {
   lastKeyPress = 0
   toast
   myId
-  reqGoAhead
- 
-  constructor(public navCtrl: NavController, public navParams: NavParams, 
+
+  constructor(public navCtrl: NavController, public navParams: NavParams,
     public userService: UserProvider, public toastCtrl: ToastController,public alertCtrl: AlertController, public requestService: RequestProvider  ) {
       this.initializeBuddies()
       this.myId = firebase.auth().currentUser.uid;
-      this.reqGoAhead = false
   }
 
   ionViewDidLoad() {
@@ -85,7 +83,7 @@ export class BuddiesPage {
   sendReq(buddy){
    this.friendRequest.sender = this.myId;
    this.friendRequest.reciever = buddy.uid;
-    
+
    if(this.friendRequest.sender == this.friendRequest.reciever){
     this.toast = this.toastCtrl.create({
       duration: 3000,
@@ -95,19 +93,18 @@ export class BuddiesPage {
     this.toast.present();
     return
    }else{
-     
+
      let  reqAlert = this.alertCtrl.create({
      title: "Friend request.",
      message:'Request will be sent to '+buddy.displayName,
      buttons: [
        {
          text: "Send", role: "save", handler: data=>{
-          console.log(this.reqGoAhead)
             this.toast = this.toastCtrl.create({
             duration: 3000,
             showCloseButton: true,
           })
-    
+
            this.requestService.sendFriendRequest(this.friendRequest)
            .then(()=>{
              let sentUser = this.foundBuddies.indexOf(this.friendRequest.reciever)
@@ -119,15 +116,19 @@ export class BuddiesPage {
              this.toast.setMessage("Could not send. Please try later.")
             this.toast.present();
            })
-          
+
           }
       },
         {text: "Cancel", role: 'cancel'}
      ]
      })
-      console.log(this.reqGoAhead)
+
      reqAlert.present()
-      
+
      }
-   }                    
+   }
+
+   goBack(){
+     this.navCtrl.pop()
+   }
   }
