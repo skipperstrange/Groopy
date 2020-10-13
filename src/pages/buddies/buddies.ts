@@ -31,7 +31,7 @@ export class BuddiesPage {
   startAtObs = this.startAt.asObservable()
   endAtObs = this.endAt.asObservable()
   lastKeyPress = 0
-  toast
+  toast = null
   myId
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
@@ -39,6 +39,21 @@ export class BuddiesPage {
       this.initializeBuddies()
       this.myId = firebase.auth().currentUser.uid;
   }
+
+  showToasting(msg){
+
+    if(!this.toast){
+      this.toast = this.toastCtrl.create({
+        duration: 5000,
+        showCloseButton: true,
+        position: "bottom"
+      })
+      this.toast.setMessage(msg)
+      this.toast.present();
+      this.toast = null;
+    }
+  }
+
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad BuddiesPage');
@@ -85,13 +100,7 @@ export class BuddiesPage {
    this.friendRequest.reciever = buddy.uid;
 
    if(this.friendRequest.sender == this.friendRequest.reciever){
-    this.toast = this.toastCtrl.create({
-      duration: 3000,
-      showCloseButton: true,
-      message: "Sorry. Can't send a request to yourself!!"
-    });
-    this.toast.present();
-    return
+    this.showToasting("Sorry. Can't send a request to yourself!!")
    }else{
 
      let  reqAlert = this.alertCtrl.create({
@@ -100,21 +109,15 @@ export class BuddiesPage {
      buttons: [
        {
          text: "Send", role: "save", handler: data=>{
-            this.toast = this.toastCtrl.create({
-            duration: 3000,
-            showCloseButton: true,
-          })
 
            this.requestService.sendFriendRequest(this.friendRequest)
            .then(()=>{
              let sentUser = this.foundBuddies.indexOf(this.friendRequest.reciever)
              this.foundBuddies.splice(sentUser,1)
-            this.toast.setMessage("Request sent to "+buddy.displayName)
-            this.toast.present();
+            this.showToasting("Request sent to "+buddy.displayName)
            })
            .catch(err=>{
-             this.toast.setMessage("Could not send. Please try later.")
-            this.toast.present();
+             this.showToasting(err)
            })
 
           }
@@ -123,8 +126,19 @@ export class BuddiesPage {
      ]
      })
 
-     reqAlert.present()
+     this.requestService.checkFriends(this.friendRequest).then((res)=>{
+      console.log("Already buddies "+res)
+      this.showToasting("You are already buddies with " + buddy.displayName+".")
+    })
+    .catch(()=>{
+      this.requestService.checkFriendRequest(this.friendRequest).then((res)=>{
+      this.showToasting("Already sent request.")
+    })
+      .catch(()=>{
+        reqAlert.present()
+      })
 
+    })
      }
    }
 

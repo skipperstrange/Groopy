@@ -14,7 +14,7 @@ import { UserProvider } from '../user/user';
 export class RequestProvider {
 
   firedata = firebase.database().ref('/friendrequests')
-  firefriends =  firebase.database().ref('/friend')
+  firefriends =  firebase.database().ref('/friends')
   friendRequests
   constructor(public userService: UserProvider, public event: Events) {
     console.log('Hello RequestProvider Provider');
@@ -23,19 +23,14 @@ export class RequestProvider {
 
   sendFriendRequest(req: FriendRequest){
   var promise = new Promise((resolve, reject)=>{
-    this.checkFriendsRequest(req).then((res: any)=>{
-      console.log(res)
-    })
-    /*this.firedata.child(req.reciever).push({
-      sender: req.sender
-      })
-      .then(()=>{
-        resolve(true)
-      })
-      .catch(err=>{
-        reject(false)
-      })
-      */
+
+      console.log(req.reciever)
+      this.firedata.child(req.reciever).push({
+        sender: req.sender
+        })
+        .then(()=>{
+          resolve(true)
+        })
     })
     return promise
   }
@@ -57,11 +52,9 @@ export class RequestProvider {
                   this.friendRequests.push(users[key])
                 }
               }
-
         })
-
     })
-      this.event.publish('gotFriendRequests')
+  this.event.publish('gotFriendRequests')
   }
 
   acceptRequest(request){
@@ -95,24 +88,27 @@ export class RequestProvider {
   deleteRequest(request){
     var promise = new Promise((resolve, reject)=>{
       this.firedata.child(firebase.auth().currentUser.uid).orderByChild('sender').equalTo(request.uid ).once('value', snapshot=>{
-      let tempStore = snapshot.val()
-      console.log(tempStore)
-      let key = Object.keys(tempStore)
-      console.log(key)
-      this.firedata.child(firebase.auth().currentUser.uid).child(key[0]).remove().then(()=>{
-        console.log("deleting")
 
-        this.deleteRequest(request).then(()=>{
-          console.log("deleted")
-          resolve(true)
-        })
-        .catch((err)=>{
-          reject(err)
-        })
-      })
-      .catch((err)=>{
-        reject(err)
-      })
+        if(!snapshot.exists()){
+          let tempStore = snapshot.val()
+          console.log(tempStore)
+          let key = Object.keys(tempStore)
+            this.firedata.child(firebase.auth().currentUser.uid).child(key[0]).remove().then(()=>{
+
+            this.deleteRequest(request).then(()=>{
+
+              resolve(true)
+            })
+            .catch((err)=>{
+              reject(err)
+            })
+          })
+          .catch((err)=>{
+            reject(err)
+          })
+        }
+
+
     })
     .catch((err)=>{
       reject(err)
@@ -121,18 +117,72 @@ export class RequestProvider {
     return promise
   }
 
-  checkFriendsRequest(request: FriendRequest){
-    var promise = new Promise((resolve)=>{
+  checkFriendRequest(request: FriendRequest){
+
+    var promise = new Promise((resolve, reject)=>{
     this.firedata.child(request.reciever).orderByChild('sender').once('value', snapshot=>{
-      let key = Object.keys(snapshot.val())
-      if(key[0] === request.sender){
-        resolve(true)
+
+      if(!snapshot.exists()){
+        reject(false)
       }else{
-        resolve(false)
+        let tempArr = snapshot.val()
+        let key
+        key = Object.keys(tempArr)
+
+        if(tempArr[key[0]].sender === request.sender){
+          resolve(true)
+        }
       }
+
+      })
+      .catch(err=>{
+        reject(false)
       })
     })
     return promise
+  }
+
+  checkFriends(request: FriendRequest){
+
+    var promise = new Promise((resolve, reject)=>{
+      this.firefriends.child(firebase.auth().currentUser.uid).orderByChild('uid').once('value', snapshot=>{
+
+
+        if(snapshot.exists()){
+              let tempArr = snapshot.val()
+              let friends = []
+
+              for(var i in tempArr){
+                friends.push(tempArr[i].uid)
+              }
+
+              for(var i in friends){
+              if(friends[i] == request.reciever){
+                resolve(true)
+              }else{
+                reject(false)
+              }
+            }
+            }
+          })
+          .catch(()=>{
+            console.log(false)
+            reject(false)
+          })
+    })
+    return promise
+  }
+
+  getFriends(){
+      var promise = new Promise ((resolve, reject)=>{
+        this.firefriends.child(firebase.auth().currentUser.uid).once('value', snapshot=>{
+          let allFriends = snapshot.val()
+          let friendsUid = []
+          for(var i in allFriends){
+            friendsUid.push(allFriends[i].uid)
+          }
+        }).then()
+      })
   }
 
 }

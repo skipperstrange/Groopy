@@ -7,9 +7,7 @@
 <ion-header >
 
   <ion-navbar color="app-primary" hideBackButton="false">
-    <button (click)="goBack()">
-      <ion-icon name="arrow-back">  </ion-icon>
-  </button>
+
   </ion-navbar>
 
 <ion-searchbar (keydown)="search($event)" [disabled]="disableSearch ? true : null">
@@ -21,7 +19,7 @@
 <ion-content padding>
 
   <ion-list *ngIf="foundBuddies.length > 0">
-    <ion-item-sliding *ngFor="let friend of foundBuddies">
+    <ion-item *ngFor="let friend of foundBuddies">
     <ion-item >
       <ion-avatar item-left>
         <img src="{{friend.photoURL}}" >
@@ -30,13 +28,20 @@
     <p>
       {{friend.bio}}
     </p>
+    <div class="option-buttons"  item-end>
+      <button ion-button color="app-primary" (click)="sendReq(friend)">
+        <ion-icon name="person-add"></ion-icon>
+      </button>
+      </div>
     </ion-item>
+    <!--
     <ion-item-options slide="left">
       <button ion-button color="app-primary" (click)="sendReq(friend)">
         <ion-icon name="person-add"></ion-icon>
       </button>
     </ion-item-options>
-  </ion-item-sliding>
+  -->
+  </ion-item>
   </ion-list>
 
   <ion-item *ngIf="foundBuddies.length < 1">
