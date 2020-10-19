@@ -23,6 +23,7 @@ import firebase from 'firebase';
 export class BuddiesPage {
 
   friendRequest = {} as FriendRequest;
+  reverseFriendRequest = {} as FriendRequest;
   foundBuddies = []
   disableSearch = true
   Buddies : any
@@ -32,6 +33,7 @@ export class BuddiesPage {
   endAtObs = this.endAt.asObservable()
   lastKeyPress = 0
   toast = null
+
   myId
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
@@ -99,46 +101,54 @@ export class BuddiesPage {
    this.friendRequest.sender = this.myId;
    this.friendRequest.reciever = buddy.uid;
 
+   this.reverseFriendRequest.sender = buddy.uid;
+   this.reverseFriendRequest.reciever = this.myId;
+
    if(this.friendRequest.sender == this.friendRequest.reciever){
     this.showToasting("Sorry. Can't send a request to yourself!!")
    }else{
 
-     let  reqAlert = this.alertCtrl.create({
-     title: "Friend request.",
-     message:'Request will be sent to '+buddy.displayName,
-     buttons: [
-       {
-         text: "Send", role: "save", handler: data=>{
+         let  reqAlert = this.alertCtrl.create({
+         title: "Friend request.",
+         message:'Request will be sent to '+buddy.displayName,
+         buttons: [
+           {
+             text: "Send", role: "save", handler: data=>{
 
-           this.requestService.sendFriendRequest(this.friendRequest)
-           .then(()=>{
-             let sentUser = this.foundBuddies.indexOf(this.friendRequest.reciever)
-             this.foundBuddies.splice(sentUser,1)
-            this.showToasting("Request sent to "+buddy.displayName)
-           })
-           .catch(err=>{
-             this.showToasting(err)
-           })
+               this.requestService.sendFriendRequest(this.friendRequest)
+               .then(()=>{
+                 let sentUser = this.foundBuddies.indexOf(this.friendRequest.reciever)
+                 this.foundBuddies.splice(sentUser,1)
+                this.showToasting("Request sent to "+buddy.displayName)
+               })
+               .catch(err=>{
+                 this.showToasting(err)
+               })
 
-          }
-      },
-        {text: "Cancel", role: 'cancel'}
-     ]
-     })
+              }
+          },
+            {text: "Cancel", role: 'cancel'}
+         ]
+         })
 
-     this.requestService.checkFriends(this.friendRequest).then((res)=>{
-      console.log("Already buddies "+res)
-      this.showToasting("You are already buddies with " + buddy.displayName+".")
-    })
-    .catch(()=>{
-      this.requestService.checkFriendRequest(this.friendRequest).then((res)=>{
-      this.showToasting("Already sent request.")
-    })
-      .catch(()=>{
-        reqAlert.present()
-      })
+         this.requestService.checkFriends(this.friendRequest).then((res)=>{
+          console.log("Already buddies "+res)
+          this.showToasting("You are already buddies with " + buddy.displayName+".")
+        })
+          .catch(()=>{
+              this.requestService.checkFriendRequest(this.reverseFriendRequest).then((res)=>{
+              this.showToasting("You already have a pending request from this uer.")
+            })
+                .catch(()=>{
+                  this.requestService.checkFriendRequest(this.friendRequest).then((res)=>{
+                  this.showToasting("Already sent request.")
+                })
+                    .catch(()=>{
+                      reqAlert.present()
+                    })
+        })
 
-    })
+        })
      }
    }
 

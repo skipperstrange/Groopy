@@ -76,7 +76,7 @@ export class ChatsPage {
 
   deleteRequest(request){
     this.requestService.deleteRequest(request).then(()=>{
-      this.navCtrl.pop()
+
     })
     .catch((err)=>{
       console.log(err)

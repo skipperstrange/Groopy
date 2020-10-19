@@ -20,7 +20,10 @@
 <ion-content padding>
 
 
- <ion-list>
+  <ion-item-group>
+    <ion-item-divider>
+      <ion-label>Requests</ion-label>
+    </ion-item-divider>
    <ion-item *ngFor="let request of myRequests" >
     <ion-avatar item-left>
       <img src="{{request.photoURL}}" >
@@ -38,28 +41,24 @@
   </button>
 </div>
    </ion-item>
+ </ion-item-group>
 
-   <!--Slider Option -->
-   <!--<ion-item-sliding *ngFor="let request of myRequests">
-    <ion-item >
+   <ion-item-group>
+  <ion-item-divider>
+    <ion-label>Friends</ion-label>
+  </ion-item-divider>
+   <button ion-item  *ngFor="let friend of myFriends">
+
       <ion-avatar item-left>
-        <img src="{{request.photoURL}}" >
+        <img src="{{friend.photoURL}}" >
       </ion-avatar>
-    <h2>{{request.displayName}}</h2>
+    <h2>{{friend.displayName}}</h2>
     <p>
-      {{request.bio}}
+      {{friend.bio}}
     </p>
-    </ion-item>
-    <ion-item-options slide="left">
-      <button ion-button color="app-primary" (click)="accept(request)">
-        <ion-icon name="checkmark"></ion-icon>
-      </button>
-      <button ion-button color="danger" (click)="deny(request)">
-        <ion-icon name="trash"></ion-icon>
-      </button>
-    </ion-item-options>
-  </ion-item-sliding>-->
- </ion-list>
+
+  </button>
+   </ion-item-group>
   <ion-fab bottom right>
     <button ion-fab (click)="addBuddy()" color="app-primary"><ion-icon name="person-add"></ion-icon></button>
   </ion-fab>
