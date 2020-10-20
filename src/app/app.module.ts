@@ -18,6 +18,7 @@ import { GroupsPageModule } from '../pages/groups/groups.module';
 import { ChatsPageModule } from '../pages/chats/chats.module';
 import { HomePageModule } from '../pages/home/home.module';
 import { PasswordResetPageModule } from '../pages/password-reset/password-reset.module';
+import { ChatPageModule } from '../pages/chat/chat.module';
 
 
 import { firebaseConfig } from "./app.firebaseconfig";
@@ -34,6 +35,7 @@ import { AuthProvider } from '../providers/auth/auth';
 import { UserProvider } from '../providers/user/user';
 import { MediaHandlerProvider } from '../providers/media-handler/media-handler';
 import { RequestProvider } from '../providers/request/request';
+import { ChatProvider } from '../providers/chat/chat';
 
 @NgModule({
   declarations: [
@@ -49,6 +51,7 @@ AngularFireModule.initializeApp(firebaseConfig),
   GroupsPageModule,
   ProfilePageModule,
   PasswordResetPageModule,
+  ChatPageModule,
   ProfilePicPageModule,
   BrowserModule,
   LoginPageModule,
@@ -70,6 +73,7 @@ AngularFireModule.initializeApp(firebaseConfig),
     UserProvider,
     MediaHandlerProvider,
     RequestProvider,
+    ChatProvider,
   ]
 })
 export class AppModule {}

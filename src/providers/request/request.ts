@@ -24,8 +24,6 @@ export class RequestProvider {
 
   sendFriendRequest(req: FriendRequest){
   var promise = new Promise((resolve, reject)=>{
-
-      console.log(req.reciever)
       this.firedata.child(req.reciever).push({
         sender: req.sender
         })
@@ -37,25 +35,28 @@ export class RequestProvider {
   }
 
   getFriendRequests(){
-    let allRequests;
-    var myRequests = [];
-    this.firedata.child(firebase.auth().currentUser.uid).on('value', snapshot=>{
-      allRequests = snapshot.val()
-      for(var i in allRequests){
-        myRequests.push(allRequests[i].sender)
+    let allmyrequests;
+    var myrequests = [];
+    this.firedata.child(firebase.auth().currentUser.uid).on('value', (snapshot) => {
+      allmyrequests = snapshot.val();
+      myrequests = [];
+      for(var i  in allmyrequests) {
+        myrequests.push(allmyrequests[i].sender);
       }
-      this.userService.getAllUsers().then((res)=>{
-        var users:any =res
-          this.friendRequests = []
-          for(var j in myRequests)
-              for(var key in users){
-                if(myRequests[j] === users[key].uid){
-                  this.friendRequests.push(users[key])
-                }
-              }
-        })
+      this.userService.getAllUsers().then((res: any) => {
+        var allusers = res;
+        this.friendRequests = [];
+        for (var j in myrequests)
+        for (var key in allusers) {
+          if(myrequests[j] === allusers[key].uid) {
+          this.friendRequests.push(allusers[key]);
+        }
+      }
+        this.event.publish('gotFriendRequests')
+      })
+
     })
-  this.event.publish('gotFriendRequests')
+
   }
 
   acceptRequest(request){
@@ -91,7 +92,6 @@ export class RequestProvider {
       this.firedata.child(firebase.auth().currentUser.uid).orderByChild('sender').equalTo(request.uid ).once('value', snapshot=>{
 
           let tempStore = snapshot.val()
-          console.log(tempStore)
           let key = Object.keys(tempStore)
             this.firedata.child(firebase.auth().currentUser.uid).child(key[0]).remove().then(()=>{
               resolve(true)
@@ -142,8 +142,8 @@ export class RequestProvider {
               let tempArr = snapshot.val()
               let friends = []
 
-              for(var i in tempArr){
-                friends.push(tempArr[i].uid)
+              for(var h in tempArr){
+                friends.push(tempArr[h].uid)
               }
 
               for(var i in friends){
@@ -168,26 +168,28 @@ export class RequestProvider {
   getFriends(){
       let friendsUid = []
       let allFriends
-        this.firefriends.child(firebase.auth().currentUser.uid).once('value', snapshot=>{
+        this.firefriends.child(firebase.auth().currentUser.uid).on('value', (snapshot)=>{
           allFriends = snapshot.val()
 
           for(var i in allFriends){
             friendsUid.push(allFriends[i].uid)
           }
-        }).then(()=>{
-              this.userService.getAllUsers().then(users=>{
-                this.myFriends = []
-              for(var j in friendsUid){
-                  for(var key in allFriends){
-                    if(friendsUid[j] == key){
-                      this.myFriends.push(allFriends[key])
-                    }
-                  }
-                this.event.publish('gotFriends')
+
+          this.userService.getAllUsers().then(users=>{
+            this.myFriends = []
+          for(var j in friendsUid){
+              for(var key in users){
+                if(friendsUid[j] == users[key].uid){
+                  console.log(friendsUid[j])
+                  this.myFriends.push(users[key])
+                }
               }
+            this.event.publish('gotFriends')
+          }
 
-            })
-
+        }).catch(err=>{
+          console.log(err)
+        })
         })
 
       }

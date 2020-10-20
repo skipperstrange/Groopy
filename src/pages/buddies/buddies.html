@@ -18,9 +18,9 @@
 
 <ion-content padding>
 
-  <ion-list *ngIf="foundBuddies.length > 0">
+  <ion-list no-lines *ngIf="foundBuddies.length > 0">
     <ion-item *ngFor="let friend of foundBuddies">
-    <ion-item >
+    <ion-item style="border-bottom: 1px #ccc solid;">
       <ion-avatar item-left>
         <img src="{{friend.photoURL}}" >
       </ion-avatar>

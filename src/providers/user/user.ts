@@ -113,7 +113,8 @@ export class UserProvider {
         this.firedata.child(this.aFireAuth.auth.currentUser.uid).set({
           displayName: newName,
           photoURL: this.aFireAuth.auth.currentUser.photoURL,
-          uid: firebase.auth().currentUser.uid
+          uid: firebase.auth().currentUser.uid,
+          bio: "Hi there. I'm new. Wanna be buddies?"
         })
         .then(()=>{
           resolve({success:true})

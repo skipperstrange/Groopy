@@ -47,7 +47,7 @@
   <ion-item-divider>
     <ion-label>Friends</ion-label>
   </ion-item-divider>
-   <button ion-item  *ngFor="let friend of myFriends">
+   <button ion-item  *ngFor="let friend of myFriends" (click)="chatBuddy(friend)">
 
       <ion-avatar item-left>
         <img src="{{friend.photoURL}}" >
