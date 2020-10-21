@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, Events, AlertController, ToastController} from 'ionic-angular';
 import { RequestProvider } from '../../providers/request/request';
 import { UserProvider } from '../../providers/user/user';
-import { ChatBuddy } from '../../models/interfaces/chatBuddy';
 import { ChatProvider } from '../../providers/chat/chat';
 
 
@@ -30,7 +29,7 @@ export class ChatsPage {
   constructor(public navCtrl: NavController, public navParams: NavParams,
     public requestService: RequestProvider, public userService: UserProvider,
     public events: Events, public alertCtrl: AlertController, public toastCtrl: ToastController,
-    public chat : ChatProvider) {
+    public chatService : ChatProvider) {
 
   }
 
@@ -125,8 +124,9 @@ export class ChatsPage {
     })
   }
 
-  chatBuddy(user){
-
+  chatBuddy(friend){
+    this.chatService.initializeBuddy(friend)
+    this.navCtrl.push('ChatPage')
   }
 
 }
