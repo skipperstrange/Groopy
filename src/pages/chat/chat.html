@@ -4,11 +4,13 @@
     <ion-title>
         {{buddy.displayName}}
     </ion-title>
+
+
   </ion-navbar>
 </ion-header>
 <ion-content>
   <div class="message-wrap">
-    <div *ngFor="let msg of conversation"
+    <div *ngFor="let msg of conversation; let i=index"
     class="message"
     [class.left]=" msg.sentby === buddy.uid "
     [class.right]="msg.sentby !== buddy.uid">
@@ -23,14 +25,15 @@
  <div class="msg-detail">
    <div class="msg-info">
      <p>
-       <b *ngIf="msg.sentby === buddy.uid ">{{buddy.displayName}}</b>
-       <b *ngIf="msg.sentby !== buddy.uid ">You</b>
+       <b *ngIf="msg.sentby === buddy.uid">{{buddy.displayName}}</b>
+       <b *ngIf="msg.sentby !== buddy.uid">You</b>
 
-       &nbsp;&nbsp;&nbsp; {{msg.timestamp | date: 'HH:mm dd-MM-yyyy'}}</p>
+       &nbsp;&nbsp; {{msg.timestamp | date: 'dd-MM HH:mm'}}</p>
    </div>
    <div class="msg-content">
      <span class="triangle"></span>
-     <p class="line-breaker ">{{msg.message}}</p>
+     <p *ngIf="!imgOrNot[i]"class="line-breaker ">{{msg.message}}</p>
+     <img *ngIf="imgOrNot[i]" [src]="msg.message" alt="">
    </div>
  </div>
 </div>
@@ -42,11 +45,12 @@
   <ion-toolbar>
     <ion-input #chat_input placeholder="Type message here" [(ngModel)]="newmessage"> </ion-input>
     <ion-buttons end>
-
+      <button ion-button clear color="app-primary" (click)="attachmentMsg()" title="Attach image from gallery">
+        <ion-icon name="image"></ion-icon>
+      </button>
       <button ion-button clear color="app-primary" icon-only item-right (click)="sendMsg()" >
-      <ion-icon name="send"></ion-icon>
+        <ion-icon name="paper-plane"></ion-icon>
      </button>
-
     </ion-buttons>
   </ion-toolbar>
   </ion-footer>

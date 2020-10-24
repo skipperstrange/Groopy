@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ToastController, AlertController  } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ToastController, AlertController, LoadingController } from 'ionic-angular';
 import { Subject } from 'rxjs/Subject';
 import { Observable } from "rxjs/Rx";
 import { UserProvider } from '../../providers/user/user';
@@ -33,11 +33,13 @@ export class BuddiesPage {
   endAtObs = this.endAt.asObservable()
   lastKeyPress = 0
   toast = null
-
+  loader
   myId
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
-    public userService: UserProvider, public toastCtrl: ToastController,public alertCtrl: AlertController, public requestService: RequestProvider  ) {
+    public userService: UserProvider, public toastCtrl: ToastController,
+    public alertCtrl: AlertController, public requestService: RequestProvider,
+    public loaderCtrl: LoadingController  ) {
       this.initializeBuddies()
       this.myId = firebase.auth().currentUser.uid;
   }
@@ -57,6 +59,23 @@ export class BuddiesPage {
   }
 
 
+  showLoading() {
+    if(!this.loader){
+        this.loader = this.loaderCtrl.create({
+          content: "",
+        });
+        this.loader.present();
+    }
+  }
+
+  dismissLoading(){
+    if(this.loader){
+        this.loader.dismiss();
+        this.loader = null;
+    }
+  }
+
+
   ionViewDidLoad() {
     console.log('ionViewDidLoad BuddiesPage');
   }
@@ -66,14 +85,17 @@ export class BuddiesPage {
 
   initializeBuddies(){
     this.Buddies = []
+    this.showLoading()
     this.userService.getAllUsers().then(res=>{
       this.Buddies =res
+      this.dismissLoading()
     })
     .then(()=>{
       this.disableSearch = false
-      console.log("Loaded buddies")
+      this.dismissLoading()
     })
     .catch((err)=>{
+      this.dismissLoading()
       console.log(err)
     });
   }

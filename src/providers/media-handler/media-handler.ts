@@ -58,4 +58,34 @@ export class MediaHandlerProvider {
   return promise;
   }
 
+  picMsgStore(){
+    var promise = new Promise((resolve, reject) => {
+      this.fileChooser.open().then((url) =>{
+        (<any>window).FilePath.resolveNativePath(url, (result)=>{
+          this.nativePath = result;
+          (<any>window).resolveLocalFileSystemURL(this.nativePath, (res) =>{
+            res.file((resFile) => {
+              var reader = new FileReader();
+              reader.readAsArrayBuffer(resFile);
+              reader.onloadend = (evt: any) => {
+                var imgBlob = new Blob([evt.target.result], {type: 'image/jpeg'});
+                var imageStore = this.firestore.ref('/picmsgs').child(firebase.auth().currentUser.uid).child('picmsg');
+                imageStore.put(imgBlob).then((res: any) => {
+                   this.firestore.ref('/picmsgs').child(firebase.auth().currentUser.uid).child('picmsg').getDownloadURL().then((url) =>{
+                    resolve(url);
+                  }).catch((err) =>{
+                    reject(err);
+                  })
+                }).catch((err) => {
+                  reject(err);
+                })
+                }
+              })
+            })
+          })
+        })
+      })
+      return promise;
+  }
+
 }

@@ -29,13 +29,14 @@ export class ChatProvider {
     }
   }
 
-  addnewmessage(msg = ''){
+  addNewMessage(msg = ''){
     if(this.buddy) {
       if(msg !== ''){
         var promise = new Promise ((resolve, reject) => {
         this.firechats.child(firebase.auth().currentUser.uid).child(this.buddy.uid).push({
           sentby: firebase.auth().currentUser.uid,
           message: msg,
+          status: "sent",
           timestamp: firebase.database.ServerValue.TIMESTAMP
         }).then(() => {
           this.firechats.child(this.buddy.uid).child(firebase.auth().currentUser.uid).push({
@@ -51,10 +52,8 @@ export class ChatProvider {
       })
       return promise;
       }
-
     }
   }
-
 
   getBuddyMessages(){
     this.buddyMessages = []

@@ -180,7 +180,6 @@ export class RequestProvider {
           for(var j in friendsUid){
               for(var key in users){
                 if(friendsUid[j] == users[key].uid){
-                  console.log(friendsUid[j])
                   this.myFriends.push(users[key])
                 }
               }

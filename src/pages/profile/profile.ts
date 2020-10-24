@@ -14,10 +14,12 @@ export class ProfilePage {
 
   avatar: any
   displayName: any
+  loader
+  toast
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
     public userService: UserProvider, public zone: NgZone,
-    public toastCtrl: ToastController, public loadCtrl: LoadingController,
+    public toastCtrl: ToastController, public loaderCtrl: LoadingController,
     public alertCtrl: AlertController, public imageService: MediaHandlerProvider){
   }
 
@@ -30,34 +32,22 @@ export class ProfilePage {
   }
 
   loadUserDetails(){
-    const toast = this.toastCtrl.create({
-      duration: 3000,
-      showCloseButton: true,
-      position: "bottom"
-    });
-    const loader = this.loadCtrl.create({duration: 400});
+    this.showLoading()
 
    this.userService.getUserDetails().then((res: any)=>{
-     console.log(res);
+     this.dismissLoading()
     this.displayName = res.displayName
     this.zone.run(()=>{
     this.avatar = res.photoURL
     })
    })
    .catch((err)=>{
-    loader.dismiss()
-    toast.setMessage(err)
-    toast.present()
+    this.dismissLoading()
   })
   }
 
   editImage(){
-    const toast = this.toastCtrl.create({
-      duration: 3000,
-      showCloseButton: true,
-    })
 
-    const loader = this.loadCtrl.create({duration: 1000})
 
 
     this.imageService.uploadImage().then((uploadedUrl: any)=>{
@@ -66,27 +56,21 @@ export class ProfilePage {
           this.zone.run(()=>{
             this.avatar = uploadedUrl
           })
-          toast.setMessage("Successfully update profile image.")
-          toast.present()
+          this.showToasting("Successfully update profile image.")
         }
       })
       .catch((err)=>{
-        toast.setMessage(err)
-          toast.present()
+        this.showToasting(err)
+
       })
     })
     .catch((err)=>{
-      toast.setMessage(err)
-      toast.present()
+      this.showToasting(err)
     })
   }
 
   editDisplayName(){
-    const toast = this.toastCtrl.create({
-      duration: 3000,
-      showCloseButton: true,
-      position: "bottom"
-    });
+
 
     let alertStatus = this.alertCtrl.create({
       title: "Edit display Name",
@@ -101,18 +85,16 @@ export class ProfilePage {
                 if(res.success){
                   this.displayName = data.displayName
                   alertStatus.setTitle("Done!")
-                  toast.setMessage("Your display name has been successfully updated.")
-                  toast.present()
+                  this.showToasting("Your display name has been successfully updated.")
                 }
                 //else{
-                 // alertStatus.setTitle("Failed!")
-                 // toast.setMessage("Could not save changes. Please try again later.")
-                 // toast.present()
+                 //
+                 // this.showToasting("Could not save changes. Please try again later.")
+                 //
                // }
               })
               .catch((err)=>{
-                  toast.setMessage(err)
-                  toast.present()
+                this.showToasting(err)
               })
             }
           }
@@ -128,5 +110,43 @@ export class ProfilePage {
       this.navCtrl.parent.parent.setRoot("LoginPage");
     })
   }
+
+  showLoading() {
+    if(!this.loader){
+        this.loader = this.loaderCtrl.create({
+          content: "",
+          duration:1000
+        });
+        this.loader.present();
+    }
+  }
+
+  dismissLoading(){
+    if(this.loader){
+        this.loader.dismiss();
+        this.loader = null;
+    }
+  }
+
+    showToasting(msg){
+
+      if(!this.toast){
+        this.toast = this.toastCtrl.create({
+          duration: 5000,
+          showCloseButton: true,
+          position: "bottom"
+        })
+        this.toast.setMessage(msg)
+        this.toast.present();
+        this.toast = null;
+      }
+    }
+
+    dismissToasting(){
+      if(this.toast){
+          this.toast.dismiss();
+          this.toast = null;
+      }
+    }
 
 }

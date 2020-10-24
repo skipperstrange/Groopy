@@ -1,8 +1,9 @@
 import { Component, OnInit, ViewChild, ElementRef, NgZone } from '@angular/core';
-import { IonicPage, NavController, NavParams, Events, Content,LoadingController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, Events, Content,LoadingController, ToastController } from 'ionic-angular';
 import { ChatProvider } from '../../providers/chat/chat';
 import { ChatBuddy } from '../../models/interfaces/chatBuddy';
 import firebase from  'firebase'
+import { MediaHandlerProvider } from '../../providers/media-handler/media-handler';
 
 /**
  * Generated class for the ChatPage page.
@@ -26,11 +27,13 @@ export class ChatPage {
   displayName
   photoURL
   imgOrNot
+  toast
 
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
     public chatService: ChatProvider,public events: Events,
-    public zone: NgZone, public loadCtrl: LoadingController ) {
+    public zone: NgZone, public loadingCtrl: LoadingController,
+    public mediaService: MediaHandlerProvider, public toastCtrl: ToastController, ) {
     this.buddy = this.chatService.buddy
     this.photoURL = firebase.auth().currentUser.photoURL
     this.events.subscribe('newmessage', () => {
@@ -40,13 +43,15 @@ export class ChatPage {
         this.conversation = this.chatService.buddyMessages;
         console.log(this.conversation)
         for(var key in this.conversation) {
-          if(this.conversation[key].message.substring(0, 4) == 'http')
+          if(this.conversation[key].message.substring(0, 4) == 'http'){
           this.imgOrNot.push(true);
-          else
+          }
+          else{
           this.imgOrNot.push(false);
+          }
         }
-        this.content.scrollToBottom()
       })
+      this.scrollToBottom()
     })
   }
 
@@ -56,11 +61,12 @@ export class ChatPage {
 
   ionViewDidEnter(){
     this.chatService.getBuddyMessages()
+    this.scrollToBottom()
   }
 
   sendMsg(msg){
-    if(this.newmessage.length > 0 || !this.newmessage || this.newmessage !== undefined){
-      this.chatService.addnewmessage(this.newmessage).then(() => {
+    if( this.newmessage || this.newmessage !== undefined){
+      this.chatService.addNewMessage(this.newmessage).then(() => {
       this.content.scrollToBottom();
       this.newmessage = '';
       })
@@ -70,10 +76,46 @@ export class ChatPage {
 
   scrollToBottom() {
     setTimeout(() => {
-      if (this.content.scrollToBottom) {
-        this.content.scrollToBottom();
-      }
+      this.content.scrollToBottom(800)
     }, 400)
   }
+
+  attachmentMsg(){
+    let loader = this.loadingCtrl.create ({
+    content: 'Please wait'
+  });
+  loader.present();
+  this.mediaService.picMsgStore().then((imgurl) => {
+    loader.dismiss();
+     this.chatService.addNewMessage(imgurl).then(() => {
+      this.content.scrollToBottom();
+      this.newmessage = '';
+    })
+  }).catch((err) => {
+
+    loader.dismiss();
+  })
+}
+
+
+cameraMsg(){
+
+}
+
+
+showToasting(msg){
+
+  if(!this.toast){
+    this.toast = this.toastCtrl.create({
+      duration: 5000,
+      showCloseButton: true,
+      position: "bottom"
+    })
+    this.toast.setMessage(msg)
+    this.toast.present();
+    this.toast = null;
+  }
+}
+
 
 }
