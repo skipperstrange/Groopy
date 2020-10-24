@@ -4,6 +4,10 @@ import firebase from 'firebase';
 import { File } from "@ionic-native/file";
 import { FileChooser } from "@ionic-native/file-chooser";
 import { FilePath } from "@ionic-native/file-path";
+//import { FileTransfer, FileUploadOptions, FileTransferObject } from '@ionic-native/file-transfer/ngx';
+import { FileTransfer} from '@ionic-native/file-transfer/ngx';
+import { Camera, CameraOptions } from '@ionic-native/camera/ngx';
+
 /*
   Generated class for the MediaHandlerProvider provider.
 
@@ -17,7 +21,19 @@ export class MediaHandlerProvider {
   firestore = firebase.storage()
   mediaSource: any
   mediaTypes = ['video/mp4','image/jpeg']
-  constructor(public fileHandler: File, public fileChooser: FileChooser, public filePath: FilePath) {
+  cameraImageURI:any;
+  cameraImageFileName:any;
+
+
+  options: CameraOptions = {
+    quality: 100,
+    destinationType: this.camera.DestinationType.FILE_URI,
+    sourceType: this.camera.PictureSourceType.PHOTOLIBRARY
+  }
+
+  constructor(public fileHandler: File, public fileChooser: FileChooser, public filePath: FilePath,
+    private transfer: FileTransfer,
+    private camera: Camera,) {
     //console.log('Hello MediaHandlerProvider Provider');
   }
 
@@ -87,5 +103,43 @@ export class MediaHandlerProvider {
       })
       return promise;
   }
+
+  getCameraImage(){
+    this.camera.getPicture(this.options).then((imageData) => {
+      this.cameraImageURI = imageData;
+      return this.cameraImageURI
+    })
+    .catch((err)=>{
+      return (err)
+    })
+  }
+
+  cameraImageStore(img){
+    var promise = new Promise((resolve, reject)=>{
+        this.nativePath =  img;
+          (<any>window).resolveLocalFileSystemURL(this.nativePath, (res) =>{
+            res.file((resFile) => {
+              var reader = new FileReader();
+              reader.readAsArrayBuffer(resFile);
+              reader.onloadend = (evt: any) => {
+                var imgBlob = new Blob([evt.target.result], {type: 'image/jpeg'});
+                var imageStore = this.firestore.ref('/picmsgs').child(firebase.auth().currentUser.uid).child('picmsg');
+                imageStore.put(imgBlob).then((res: any) => {
+                   this.firestore.ref('/picmsgs').child(firebase.auth().currentUser.uid).child('picmsg').getDownloadURL().then((url) =>{
+                    resolve(true);
+                  }).catch((err) =>{
+                    reject(err);
+                  })
+                }).catch((err) => {
+                  reject(err);
+                })
+                }
+              })
+            })
+    })
+    return promise
+  }
+
+
 
 }

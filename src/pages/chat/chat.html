@@ -5,7 +5,11 @@
         {{buddy.displayName}}
     </ion-title>
 
-
+    <ion-buttons end>
+      <button ion-button (click)="cameraMsg()">
+        <ion-icon name="camera"></ion-icon>
+      </button>
+    </ion-buttons>
   </ion-navbar>
 </ion-header>
 <ion-content>
@@ -18,7 +22,7 @@
       <img class="user-img" [src]="buddy.photoURL" alt="" >
     </span>
     <span *ngIf="msg.sentby !== buddy.uid ">
-      <img class="user-img" [src]="photoURL" alt="" >
+      <img class="user-img" src="{{photoURL}}" alt="" >
     </span>
 
  <ion-spinner name="dots" *ngIf="msg.status === 'pending'"></ion-spinner>
