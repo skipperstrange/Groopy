@@ -54,7 +54,7 @@ export class CameraPage {
 
   this.mediaService.cameraImageStore(this.mediaService.cameraImageURI).then((imgUrl) => {
     this.loaderToaster.dismissLoading();
-     this.chatService.addNewMessage(imgurl).then(() => {
+     this.chatService.addNewMessage(imgUrl).then(() => {
       this.navCtrl.pop()
     })
   }).catch((err) => {
