@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, Events, AlertController, ToastController, LoadingController} from 'ionic-angular';
+import { IonicPage, NavController, NavParams, Events, AlertController} from 'ionic-angular';
 import { RequestProvider } from '../../providers/request/request';
 import { UserProvider } from '../../providers/user/user';
 import { ChatProvider } from '../../providers/chat/chat';
+import { LoaderToasterProvider } from '../../providers/loader-toaster/loader-toaster';
 
 
 
@@ -29,8 +30,7 @@ export class ChatsPage {
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
     public requestService: RequestProvider, public userService: UserProvider,
-    public events: Events, public alertCtrl: AlertController,
-    public toastCtrl: ToastController, public loaderCtrl: LoadingController,
+    public events: Events, public alertCtrl: AlertController, public loaderToaster: LoaderToasterProvider,
     public chatService : ChatProvider) {
 
   }
@@ -40,10 +40,10 @@ export class ChatsPage {
   }
 
   ionViewWillEnter(){
-    this.showLoading()
+    this.loaderToaster.showLoading()
    this.loadRequests()
    this.loadFriends()
-   this.dismissLoading()
+   this.loaderToaster.dismissLoading()
   }
 
   ionDidLeaveView(){
@@ -80,7 +80,7 @@ export class ChatsPage {
 
   acceptRequest(request){
     this.requestService.checkFriends(request).then((res)=>{
-      this.showToasting("You are already buddies.")
+      this.loaderToaster.showToast("You are already buddies.")
     })
       .catch(()=>{
         this.requestService.acceptRequest(request).then(()=>{
@@ -114,39 +114,6 @@ export class ChatsPage {
   chatBuddy(friend){
     this.chatService.initializeBuddy(friend)
     this.navCtrl.push('ChatPage')
-  }
-
-
-
-  showLoading() {
-    if(!this.loader){
-        this.loader = this.loaderCtrl.create({
-          content: "",
-        });
-        this.loader.present();
-    }
-  }
-
-  dismissLoading(){
-    if(this.loader){
-        this.loader.dismiss();
-        this.loader = null;
-    }
-  }
-
-
-  showToasting(msg){
-
-    if(!this.toast){
-      this.toast = this.toastCtrl.create({
-        duration: 5000,
-        showCloseButton: true,
-        position: "bottom"
-      })
-      this.toast.setMessage(msg)
-      this.toast.present();
-      this.toast = null;
-    }
   }
 
 }

@@ -41,7 +41,7 @@ export class LoaderToasterProvider {
   }
 
 
-  showToasting(msg: string){
+  showToast(msg: string){
     if(msg){
     this.setContent(msg)
     }
@@ -50,9 +50,8 @@ export class LoaderToasterProvider {
         message: this.options.content,
         duration: this.options.duration,
         showCloseButton: true,
-        position: "bottom"
+        position: this.position
       })
-
       this.toast.present();
       this.toast = null;
     }

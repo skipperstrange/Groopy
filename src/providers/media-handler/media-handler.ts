@@ -105,13 +105,16 @@ export class MediaHandlerProvider {
   }
 
   getCameraImage(){
-    this.camera.getPicture(this.options).then((imageData) => {
-      this.cameraImageURI = imageData;
-      return this.cameraImageURI
+    var promise = new Promise((resolve, reject)=>{
+          this.camera.getPicture(this.options).then((imageData) => {
+          this.cameraImageURI = imageData;
+           resolve(imageData)
+        })
+        .catch((err)=>{
+          reject (err)
+        })
     })
-    .catch((err)=>{
-      return (err)
-    })
+    return promise
   }
 
   cameraImageStore(img){

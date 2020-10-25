@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ToastController, LoadingController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { Validators, FormBuilder, FormGroup } from "@angular/forms";
 import { AuthProvider } from "../../providers/auth/auth";
 import { userCreds } from '../../models/interfaces/usercreds';
+import { LoaderToasterProvider } from '../../providers/loader-toaster/loader-toaster';
 
 /**
  * Generated class for the LoginPage page.
@@ -21,9 +22,8 @@ export class LoginPage {
   userCredentials = {} as userCreds;
   public loginForm: FormGroup
 
-  constructor(public navCtrl: NavController, public navParams: NavParams,
-     public toastCtrl: ToastController, public loadCtrl: LoadingController, public authService: AuthProvider,
-     public formBuilder: FormBuilder) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public authService: AuthProvider,
+     public formBuilder: FormBuilder,public loaderToaster: LoaderToasterProvider) {
     this.loginForm = formBuilder.group({
       email:['', [Validators.email, Validators.required]],
       password: ['', Validators.required]
@@ -35,36 +35,28 @@ export class LoginPage {
 
   signin(){
 
-    const toast = this.toastCtrl.create({
-      duration: 3000,
-      showCloseButton: true,
-    })
 
-    const loader = this.loadCtrl.create({duration: 20000})
-    loader.present()
-
+     this.loaderToaster.showLoading()
     if(this.userCredentials.email == undefined){
-      loader.dismiss()
-      toast.setMessage("Email cannot be empty")
-      toast.present();
-      return;
-    }else if(this.userCredentials.password == undefined){
-      loader.dismiss()
-      toast.setMessage("Password cannot be empty")
-      toast.present();
-      return;
-    }else{
-      loader.present();
+      this.loaderToaster.dismissLoading()
+      this.loaderToaster.showToast("Email cannot be empty")
+    }
+    else if(this.userCredentials.password == undefined){
+      this.loaderToaster.dismissLoading()
+      this.loaderToaster.showToast("Password cannot be empty")
+
+    }
+    else{
+      this.loaderToaster.showLoading()
       this.authService.login(this.userCredentials)
       .then((res:  any)=>{
         if(!res.code){
-          loader.dismiss()
+          this.loaderToaster.dismissLoading()
           this.navCtrl.setRoot("TabsPage");
         }
       }).catch((err)=>{
-        loader.dismiss();
-        toast.setMessage(err)
-        toast.present();
+        this.loaderToaster.dismissLoading()
+        this.loaderToaster.showToast(err)
       });
     }
   }

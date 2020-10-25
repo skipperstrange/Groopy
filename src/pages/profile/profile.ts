@@ -4,6 +4,7 @@ import { UserProvider } from '../../providers/user/user';
 import { Placeholder } from '@angular/compiler/src/i18n/i18n_ast';
 import firebase from 'firebase/app';
 import { MediaHandlerProvider } from '../../providers/media-handler/media-handler';
+import { LoaderToasterProvider } from '../../providers/loader-toaster/loader-toaster';
 
 @IonicPage()
 @Component({
@@ -19,7 +20,7 @@ export class ProfilePage {
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
     public userService: UserProvider, public zone: NgZone,
-    public toastCtrl: ToastController, public loaderCtrl: LoadingController,
+    public loaderToaster: LoaderToasterProvider,
     public alertCtrl: AlertController, public imageService: MediaHandlerProvider){
   }
 
@@ -32,17 +33,17 @@ export class ProfilePage {
   }
 
   loadUserDetails(){
-    this.showLoading()
+    this.loaderToaster.showLoading()
 
    this.userService.getUserDetails().then((res: any)=>{
-     this.dismissLoading()
+     this.loaderToaster.dismissLoading()
     this.displayName = res.displayName
     this.zone.run(()=>{
     this.avatar = res.photoURL
     })
    })
    .catch((err)=>{
-    this.dismissLoading()
+    this.loaderToaster.dismissLoading()
   })
   }
 
@@ -56,16 +57,16 @@ export class ProfilePage {
           this.zone.run(()=>{
             this.avatar = uploadedUrl
           })
-          this.showToasting("Successfully update profile image.")
+          this.loaderToaster.showToast("Successfully update profile image.")
         }
       })
       .catch((err)=>{
-        this.showToasting(err)
+        this.loaderToaster.showToast(err)
 
       })
     })
     .catch((err)=>{
-      this.showToasting(err)
+      this.loaderToaster.showToast(err)
     })
   }
 
@@ -85,16 +86,16 @@ export class ProfilePage {
                 if(res.success){
                   this.displayName = data.displayName
                   alertStatus.setTitle("Done!")
-                  this.showToasting("Your display name has been successfully updated.")
+                  this.loaderToaster.showToast("Your display name has been successfully updated.")
                 }
                 //else{
                  //
-                 // this.showToasting("Could not save changes. Please try again later.")
+                 // this.loaderToaster.showToast("Could not save changes. Please try again later.")
                  //
                // }
               })
               .catch((err)=>{
-                this.showToasting(err)
+                this.loaderToaster.showToast(err)
               })
             }
           }
@@ -111,42 +112,5 @@ export class ProfilePage {
     })
   }
 
-  showLoading() {
-    if(!this.loader){
-        this.loader = this.loaderCtrl.create({
-          content: "",
-          duration:1000
-        });
-        this.loader.present();
-    }
-  }
-
-  dismissLoading(){
-    if(this.loader){
-        this.loader.dismiss();
-        this.loader = null;
-    }
-  }
-
-    showToasting(msg){
-
-      if(!this.toast){
-        this.toast = this.toastCtrl.create({
-          duration: 5000,
-          showCloseButton: true,
-          position: "bottom"
-        })
-        this.toast.setMessage(msg)
-        this.toast.present();
-        this.toast = null;
-      }
-    }
-
-    dismissToasting(){
-      if(this.toast){
-          this.toast.dismiss();
-          this.toast = null;
-      }
-    }
 
 }
