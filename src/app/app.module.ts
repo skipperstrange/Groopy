@@ -6,7 +6,7 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { File } from '@ionic-native/file';
 import { FilePath } from '@ionic-native/file-path';
 import { FileChooser } from '@ionic-native/file-chooser';
-//import { FileTransfer, FileUploadOptions, FileTransferObject } from '@ionic-native/file-transfer/ngx';
+import { FileTransfer, FileUploadOptions, FileTransferObject } from '@ionic-native/file-transfer/ngx';
 import { Camera } from '@ionic-native/camera/ngx';
 
 
@@ -70,7 +70,7 @@ AngularFireModule.initializeApp(firebaseConfig),
     File,
     FilePath,
     FileChooser,
-//    FileTransfer,
+    FileTransfer,
     Camera,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     AuthProvider,

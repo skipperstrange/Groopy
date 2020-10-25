@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, ElementRef, NgZone } from '@angular/core';
-import { IonicPage, NavController, NavParams, Events, Content,LoadingController, ToastController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, Events, Content } from 'ionic-angular';
 import { ChatProvider } from '../../providers/chat/chat';
 import { ChatBuddy } from '../../models/interfaces/chatBuddy';
 import firebase from  'firebase'
