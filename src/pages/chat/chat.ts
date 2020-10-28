@@ -89,7 +89,7 @@ export class ChatPage {
       this.loaderToaster.setDuration(2000)
       this.loaderToaster.showLoading()
 
-    this.mediaService.picMsgStore().then((imgUrl) => {
+    this.mediaService.picMsgStore().then((imgUrl: any) => {
       this.loaderToaster.dismissLoading();
        this.chatService.addNewMessage(imgUrl).then(() => {
         this.content.scrollToBottom();

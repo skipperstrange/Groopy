@@ -85,9 +85,9 @@ export class MediaHandlerProvider {
               reader.readAsArrayBuffer(resFile);
               reader.onloadend = (evt: any) => {
                 var imgBlob = new Blob([evt.target.result], {type: 'image/jpeg'});
-                var imageStore = this.firestore.ref('/picmsgs').child(firebase.auth().currentUser.uid).child('picmsg');
+                var imageStore = this.firestore.ref('/mediamsgs').child(firebase.auth().currentUser.uid).child('mediamsg');
                 imageStore.put(imgBlob).then((res: any) => {
-                   this.firestore.ref('/picmsgs').child(firebase.auth().currentUser.uid).child('picmsg').getDownloadURL().then((url) =>{
+                   this.firestore.ref('/mediamsgs').child(firebase.auth().currentUser.uid).child('mediamsg').getDownloadURL().then((url) =>{
                     resolve(url);
                   }).catch((err) =>{
                     reject(err);
@@ -126,9 +126,9 @@ export class MediaHandlerProvider {
               reader.readAsArrayBuffer(resFile);
               reader.onloadend = (evt: any) => {
                 var imgBlob = new Blob([evt.target.result], {type: 'image/jpeg'});
-                var imageStore = this.firestore.ref('/picmsgs').child(firebase.auth().currentUser.uid).child('picmsg');
+                var imageStore = this.firestore.ref('/mediamsgs').child(firebase.auth().currentUser.uid).child('mediamsg');
                 imageStore.put(imgBlob).then((res: any) => {
-                   this.firestore.ref('/picmsgs').child(firebase.auth().currentUser.uid).child('picmsg').getDownloadURL().then((url) =>{
+                   this.firestore.ref('/mediamsgs').child(firebase.auth().currentUser.uid).child('mediamsg').getDownloadURL().then((url) =>{
                     resolve(true);
                   }).catch((err) =>{
                     reject(err);
