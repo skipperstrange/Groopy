@@ -34,7 +34,7 @@ export class ProfilePicPage {
   }
 
   ionViewDidEnter(){
-    this.imgUrl = "https://www.pngitem.com/pimgs/m/146-1468843_profile-icon-orange-png-transparent-png.png"
+    this.imgUrl = "assets/imgs/defaultUser.png"
   }
 
   chooseImg(){

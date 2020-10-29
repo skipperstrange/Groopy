@@ -19,11 +19,11 @@ import { GroupsProvider } from '../../providers/groups/groups';
 export class NewGroupPage {
 
   newGroup = {
-    groupPic:"",
-    name: "Group Name",
+    groupPic:"../../assets/imgs/defaultUser.png",
+    name: "",
     description: "",
     private: true,
-    category: "N/A"
+    category: ""
   }
 
    groupForm: FormGroup

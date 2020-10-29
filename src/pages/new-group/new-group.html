@@ -16,17 +16,17 @@
 <ion-content padding>
 
   <ion-row>
-    <div class="profile-img" (click)="editImage()">
+    <div class="profile-img">
       <img src="{{newGroup.groupPic}}" alt="">
     </div>
   </ion-row>
 
         <ion-list no-line>
-<div [formGroup]="groupForm">
-          <ion-item>
-            <ion-input required placeholder="Group Name" formControlName="name" [(ngModel)]="newGroup.name" ></ion-input>
-          </ion-item>
-</div>
+          <div [formGroup]="groupForm">
+            <ion-item>
+              <ion-input required placeholder="Group Name" formControlName="name" [(ngModel)]="newGroup.name" ></ion-input>
+            </ion-item>
+          </div>
           <ion-item>
             <ion-input placeholder="Description" name="description" [(ngModel)]="newGroup.description"></ion-input>
           </ion-item>
@@ -38,7 +38,7 @@
 
           <ion-item>
             <ion-label>Private <span class="small">Unkown buddies will require request to join.</span></ion-label>
-            <ion-toggle class="toggle-small" color="app-primary" [checked]="newGroup.private" toggle-class="toggle-calm" id="toggle" (click)="toggleGroupPrivacy()"  ></ion-toggle>
+            <ion-toggle class="toggle-small" color="app-primary" [checked]="newGroup.private" toggle-class="toggle-calm" id="toggle" (ionChange)="toggleGroupPrivacy()"  ></ion-toggle>
           </ion-item>
 
           <button ion-button block color="app-primary" [disabled]="!groupForm.valid" (click)="save()">Save</button>
