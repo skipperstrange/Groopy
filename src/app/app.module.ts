@@ -39,6 +39,7 @@ import { MediaHandlerProvider } from '../providers/media-handler/media-handler';
 import { RequestProvider } from '../providers/request/request';
 import { ChatProvider } from '../providers/chat/chat';
 import { LoaderToasterProvider } from '../providers/loader-toaster/loader-toaster';
+import { GroupsProvider } from '../providers/groups/groups';
 
 @NgModule({
   declarations: [
@@ -79,6 +80,7 @@ AngularFireModule.initializeApp(firebaseConfig),
     RequestProvider,
     ChatProvider,
     LoaderToasterProvider,
+    GroupsProvider,
   ]
 })
 export class AppModule {}

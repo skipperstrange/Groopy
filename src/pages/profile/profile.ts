@@ -82,7 +82,6 @@ export class ProfilePage {
             if(data.displayName){
               this.userService.updateDisplayName(data.displayName)
               .then((res: any)=>{
-
                 if(res.success){
                   this.displayName = data.displayName
                   alertStatus.setTitle("Done!")

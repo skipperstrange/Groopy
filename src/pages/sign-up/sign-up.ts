@@ -23,10 +23,6 @@ export class SignUpPage {
   newUser = {} as userInterface;
   public regForm: FormGroup
 
-  loader
-  toast = null
-
-
   constructor(public navCtrl: NavController, public navParams: NavParams,
     public userService: UserProvider,
     public loaderToaster: LoaderToasterProvider,
