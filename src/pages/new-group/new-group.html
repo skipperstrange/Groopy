@@ -17,14 +17,14 @@
 
   <ion-row>
     <div class="profile-img" (click)="editImage()">
-      <img src="{{newGroup.groupPhoto}}" alt="">
+      <img src="{{newGroup.groupPic}}" alt="">
     </div>
   </ion-row>
 
         <ion-list no-line>
 <div [formGroup]="groupForm">
           <ion-item>
-            <ion-input required placeholder="Group Name" formControlName="groupName" [(ngModel)]="newGroup.name" ></ion-input>
+            <ion-input required placeholder="Group Name" formControlName="name" [(ngModel)]="newGroup.name" ></ion-input>
           </ion-item>
 </div>
           <ion-item>

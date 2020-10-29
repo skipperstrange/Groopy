@@ -19,8 +19,8 @@ import { GroupsProvider } from '../../providers/groups/groups';
 export class NewGroupPage {
 
   newGroup = {
-    groupPhoto:"https://www.pngitem.com/pimgs/m/146-1468843_profile-icon-orange-png-transparent-png.png",
-    name: "",
+    groupPic:"",
+    name: "Group Name",
     description: "",
     private: true,
     category: "N/A"
@@ -31,7 +31,7 @@ export class NewGroupPage {
   constructor(public navCtrl: NavController, public navParams: NavParams, public loaderToaster: LoaderToasterProvider,
     public formBuilder: FormBuilder) {
     this.groupForm = formBuilder.group({
-      name: ['groupName', Validators.compose([Validators.required, Validators.minLength(2)])]
+      name: ['name', Validators.compose([Validators.required, Validators.minLength(2)])]
     })
 
   }
