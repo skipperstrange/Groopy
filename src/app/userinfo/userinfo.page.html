@@ -1,0 +1,44 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button mode="md"></ion-back-button>
+    </ion-buttons>
+    <ion-title *ngIf="user">{{user.name}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div *ngIf="user"
+    style="display:flex; flex-direction: column; justify-content: center; height: 100%; align-items: center;">
+    <img src="{{user.img}}" (click)="enlargeImage(user.img)" onError="this.src='./assets/images/default-dp.png'"
+      style="border-radius: 100%; height: 80px; width: 80px;">
+    <h4 style="margin:0">{{user.name}}</h4>
+    <p style="color:#aaa;margin:0">@{{user.username}}</p>
+    <p style="color:#444">{{user.description}}</p>
+    <div style="border-top: 1px solid #ececec; padding: 10px;">
+      <!-- Show actions based on the status of the user in relation to the current logged in user. -->
+      <div *ngIf="friendRequests && friendRequests.indexOf(user.$key) > -1">
+        <p class="info">Sent you a friend request.</p>
+        <ion-button size="small" (click)="rejectFriendRequest()">
+          Decline
+        </ion-button>
+        <ion-button size="small" (click)="acceptFriendRequest()">
+          Accept
+        </ion-button>
+      </div>
+      <div *ngIf="requestsSent && requestsSent.indexOf(user.$key) > -1">
+        <ion-button size="small" (click)="cancelFriendRequest()">Cancel
+          Request</ion-button>
+      </div>
+      <div *ngIf="canAdd()">
+        <ion-button size="small" (click)="sendFriendRequest()">Add Friend</ion-button>
+      </div>
+      <div *ngIf="friends && friends.indexOf(user.$key) > -1">
+        <ion-button size="small" (click)="sendMessage()">Start Chat</ion-button>
+        <ion-button size="small" (click)="block()">Block User</ion-button>
+      </div>
+    </div>
+
+
+  </div>
+</ion-content>

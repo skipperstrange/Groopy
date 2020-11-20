@@ -1,0 +1,120 @@
+/*
+ * App Global CSS
+ * ----------------------------------------------------------------------------
+ * Put style rules here that you want to apply globally. These styles are for
+ * the entire app and not just one component. Additionally, this file can be
+ * used as an entry point to import other CSS/Sass files to be included in the
+ * output CSS.
+ * For more information on global stylesheets, visit the documentation:
+ * https://ionicframework.com/docs/layout/global-stylesheets
+ */
+
+/* Core CSS required for Ionic components to work properly */
+@import "~@ionic/angular/css/core.css";
+
+/* Basic CSS for apps built with Ionic */
+@import "~@ionic/angular/css/normalize.css";
+@import "~@ionic/angular/css/structure.css";
+@import "~@ionic/angular/css/typography.css";
+@import '~@ionic/angular/css/display.css';
+
+/* Optional CSS utils that can be commented out */
+@import "~@ionic/angular/css/padding.css";
+@import "~@ionic/angular/css/float-elements.css";
+@import "~@ionic/angular/css/text-alignment.css";
+@import "~@ionic/angular/css/text-transformation.css";
+@import "~@ionic/angular/css/flex-utils.css";
+
+@font-face {
+  font-family: 'Circular Std Book';
+  src: url('assets/fonts/circular-std-book/font/circular-std-book.ttf');//mine
+}
+
+@font-face {
+  font-family: 'Circular Std Bold';
+  src: url('assets/fonts/circular-std-book-bold/font/circular-std-book-bold.ttf');//mine
+}
+
+*{
+  font-family: 'Circular Std Book';
+}
+
+ion-title{
+  font-weight: 500;
+}
+
+ion-item {
+  --highlight-color-valid: transparent;
+  --highlight-color-invalid: transparent;
+  --highlight-color-focused: transparent;
+  --min-height: 60px;
+}
+ion-button{
+  --box-shadow:none;
+}
+
+.header-md:after{
+  background-image: none;
+}
+
+.center{
+    text-align:center
+}
+.gray-text{
+  color: #777;
+}
+
+.empty-list{
+    text-align: center;
+    display: flex;
+    height: 100vw;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    color: #999999;
+}
+.chatbox{
+    padding: 8px;
+    border-radius: 8px;
+    max-width: 70%;
+    min-width: 70%;
+    margin: 4px 12px;
+  }
+.chatbox p{
+  margin:0;
+}
+  .chatbox span{
+    font-size: 12px;
+  }
+  .right{
+    color: #444;
+    float: right;
+    text-align: right;
+    padding-right: 5px;
+    border: 2px solid #eee;
+  }
+  .left{
+    background: #eee;
+    color: #444;
+    float: left;
+    text-align: left;
+  }
+  video{
+    background: #eee;
+    border-radius: 5px;
+  }
+  
+.error{
+  margin:0;
+  color: #F44336;
+  font-size: 12px;
+}
+
+ion-text p{
+  color: #777;
+  margin: 4px 0px !important;
+}
+
+.header-ios ion-toolbar:last-child{
+  --border-color: #eee;
+}

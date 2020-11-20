@@ -1,62 +1,47 @@
-import { Component, ViewChild } from '@angular/core';
-import { Platform, Nav } from 'ionic-angular';
-import { StatusBar } from '@ionic-native/status-bar';
-import { SplashScreen } from '@ionic-native/splash-screen';
-import { menuInterface } from '../models/interfaces/menuInterface';
+import { Component } from '@angular/core';
 
-import { LoginPage } from '../pages/login/login';
-import  firebase from 'firebase/app';
+import { Platform } from '@ionic/angular';
+import { SplashScreen } from '@ionic-native/splash-screen/ngx';
+import { StatusBar } from '@ionic-native/status-bar/ngx';
+
+import { Router } from '@angular/router';
+import { AngularFireAuth } from '@angular/fire/auth';
+
 @Component({
-  templateUrl: 'app.html'
+  selector: 'app-root',
+  templateUrl: 'app.component.html',
+  styleUrls: ['app.component.scss']
 })
-export class MyApp {
-  rootPage:any = LoginPage;
-  menuTabIndex: number
+export class AppComponent {
+  constructor(
+    private platform: Platform,
+    private splashScreen: SplashScreen,
+    private statusBar: StatusBar,
+    private router: Router,
+    private afAuth: AngularFireAuth
+  ) {
+    this.initializeApp();
+  }
 
+  initializeApp() {
+    this.platform.ready().then(() => {
+      if (this.platform.is("android"))
+        this.statusBar.styleLightContent()
+      else
+        this.statusBar.styleDefault();
 
-  @ViewChild(Nav) nav: Nav
-
-  pages: menuInterface[] = [
-    {title: "Profile", pageName: "Profile", pageComponent: "ProfilePage", icon: "contact" },
-    {title: "Categories", pageName: "Categories", pageComponent: "CategoriesPage", icon: "ion-list" },
-    {title: "My Groups", pageName: "Groups", tabComponent: "GroupPage", tabIndex: 1, icon: "contacts" },
-    {title: "My Settings", pageName: "Settings", pageComponent: "SettingsPage", icon: "ion-gear" },
-  ]
-
-  constructor(platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen
-    ) {
-    platform.ready().then(() => {
-      // Okay, so the platform is ready and our plugins are available.
-      // Here you can do any higher level native things you might need.
-      statusBar.styleDefault();
-      splashScreen.hide();
-
-
+      this.splashScreen.hide();
+      if (localStorage.getItem('isLoggedIn') == 'true') {
+        this.afAuth.auth.onAuthStateChanged(user => {
+          if (user == null)
+            this.router.navigateByUrl('/login', { replaceUrl: true, skipLocationChange: true })
+          else
+            this.router.navigateByUrl('/tabs/tab1', { skipLocationChange: true, replaceUrl: true })
+        })
+      }
+      else {
+        this.router.navigateByUrl('/login');
+      }
     });
   }
-
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad MenuPage');
-  }
-
-  openPage(page: menuInterface){
-    let params = {}
-
-    if(page.tabIndex){ params = {tabIndex: page.tabIndex} }
-
-    if(this.nav.getActiveChildNav() && page.tabIndex !== undefined){
-      this.nav.setRoot(page.pageName, params)
-    }
-  }
-
-  isActive(page: menuInterface){
-
-  }
-
-  logout(){
-    firebase.auth().signOut().then(()=>{
-      this.nav.setRoot("LoginPage");
-    })
-  }
 }
-

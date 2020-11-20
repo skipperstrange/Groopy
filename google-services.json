@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "742448802415",
+    "firebase_url": "https://groopy-c424a.firebaseio.com",
+    "project_id": "groopy-c424a",
+    "storage_bucket": "groopy-c424a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:742448802415:android:b70533261034b1446ebb9a",
+        "android_client_info": {
+          "package_name": "com.groopygroups.groopy"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "742448802415-4edgde4dp0e96b26s7bv76klpv1aq74g.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAHPLB0CsRzUAdY_ZbKcrPEVGQPXga82Dk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "742448802415-4edgde4dp0e96b26s7bv76klpv1aq74g.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

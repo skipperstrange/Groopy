@@ -1,0 +1,34 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button mode="md"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Reset Password</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <div class="center ion-padding">
+    <img src="assets/images/logo.png" style="width:80px;height:80px;border-radius: 20px;" />
+    <h3>Groopy</h3>
+  </div>
+  <form [formGroup]="myForm">
+    <ion-list lines="none">
+      <ion-item>
+        <ion-label position="stacked">Email</ion-label>
+        <ion-input type="email" formControlName="email" email="true" [(ngModel)]="email"></ion-input>
+        <div *ngFor="let validation of errorMessages.email">
+          <p class="error"
+            *ngIf="myForm.get('email').hasError(validation.type) && (myForm.get('email').dirty || myForm.get('email').touched || submitAttempt) ">
+            {{validation.message}}
+          </p>
+        </div>
+      </ion-item>
+      <div class="ion-padding">
+        <ion-button expand="block" color="primary" (click)="reset()">
+          Reset Password
+        </ion-button>
+      </div>
+    </ion-list>
+  </form>
+</ion-content>

@@ -1,88 +1,70 @@
+import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { ErrorHandler, NgModule } from '@angular/core';
-import { IonicApp, IonicErrorHandler, IonicModule, NavParams } from 'ionic-angular';
-import { SplashScreen } from '@ionic-native/splash-screen';
-import { StatusBar } from '@ionic-native/status-bar';
-import { File } from '@ionic-native/file';
-import { FilePath } from '@ionic-native/file-path';
-import { FileChooser } from '@ionic-native/file-chooser';
-import { FileTransfer, FileUploadOptions, FileTransferObject } from '@ionic-native/file-transfer/ngx';
+import { RouteReuseStrategy } from '@angular/router';
+
+import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
+import { SplashScreen } from '@ionic-native/splash-screen/ngx';
+import { StatusBar } from '@ionic-native/status-bar/ngx';
+
+import { AppRoutingModule } from './app-routing.module';
+import { AppComponent } from './app.component';
+
+import { AngularFireModule } from '@angular/fire';
+import { AngularFireDatabaseModule } from '@angular/fire/database';
+import { AngularFireStorageModule } from '@angular/fire/storage';
+import { AngularFireAuthModule } from '@angular/fire/auth';
+
+import { environment } from '../environments/environment.prod';
+
+import { GooglePlus } from '@ionic-native/google-plus/ngx';
+import { Facebook } from '@ionic-native/facebook/ngx';
+import { FirebaseX } from '@ionic-native/firebase-x/ngx';
 import { Camera } from '@ionic-native/camera/ngx';
+import { MediaCapture } from '@ionic-native/media-capture/ngx';
+import { File } from '@ionic-native/file/ngx';
+import { Geolocation } from '@ionic-native/geolocation/ngx';
+import { Contacts } from '@ionic-native/contacts/ngx';
+import { Keyboard } from '@ionic-native/keyboard/ngx';
 
+import { SharedModule } from './services/share.module';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
-import { MyApp } from './app.component';
-import { LoginPage  } from '../pages/login/login';
-
-import { LoginPageModule  } from '../pages/login/login.module';
-import { ProfilePageModule } from '../pages/profile/profile.module';
-import { ProfilePicPageModule } from '../pages/profile-pic/profile-pic.module';
-import { GroupsPageModule } from '../pages/groups/groups.module';
-import { ChatsPageModule } from '../pages/chats/chats.module';
-import { HomePageModule } from '../pages/home/home.module';
-import { PasswordResetPageModule } from '../pages/password-reset/password-reset.module';
-import { ChatPageModule } from '../pages/chat/chat.module';
-
-
-import { firebaseConfig } from "./app.firebaseconfig";
-
-// Import the AF2 Module
-import { AngularFireModule } from 'angularfire2';
-// for AngularFireDatabase
-import { AngularFireDatabaseModule } from 'angularfire2/database';
-
-
-// for AngularFireAuth
-import { AngularFireAuthModule } from 'angularfire2/auth';
-import { AuthProvider } from '../providers/auth/auth';
-import { UserProvider } from '../providers/user/user';
-import { MediaHandlerProvider } from '../providers/media-handler/media-handler';
-import { RequestProvider } from '../providers/request/request';
-import { ChatProvider } from '../providers/chat/chat';
-import { LoaderToasterProvider } from '../providers/loader-toaster/loader-toaster';
-import { GroupsProvider } from '../providers/groups/groups';
-import { CategoriesProvider } from '../providers/categories/categories';
+import { ImagemodalPageModule } from './imagemodal/imagemodal.module'
 
 @NgModule({
   declarations: [
-    MyApp,
+    AppComponent
   ],
+  entryComponents: [],
   imports: [
-AngularFireModule.initializeApp(firebaseConfig),
-  AngularFireDatabaseModule,
-  AngularFireAuthModule,
-  HomePageModule,
-  ChatsPageModule,
-  GroupsPageModule,
-  ProfilePageModule,
-  PasswordResetPageModule,
-  ChatPageModule,
-  ProfilePicPageModule,
-  BrowserModule,
-  LoginPageModule,
-    IonicModule.forRoot(MyApp)
-  ],
-  bootstrap: [IonicApp],
-  entryComponents: [
-    MyApp,
-    LoginPage,
+    BrowserModule,
+    IonicModule.forRoot({
+      mode: 'ios',
+    }),
+    AppRoutingModule,
+    AngularFireModule.initializeApp(environment.firebase),
+    AngularFireDatabaseModule,
+    AngularFireStorageModule,
+    AngularFireAuthModule,
+    SharedModule,
+    FormsModule,
+    ReactiveFormsModule,
+    ImagemodalPageModule
   ],
   providers: [
     StatusBar,
     SplashScreen,
-    File,
-    FilePath,
-    FileChooser,
-    FileTransfer,
+    GooglePlus,
+    Facebook,
     Camera,
-    {provide: ErrorHandler, useClass: IonicErrorHandler},
-    AuthProvider,
-    UserProvider,
-    MediaHandlerProvider,
-    RequestProvider,
-    ChatProvider,
-    LoaderToasterProvider,
-    GroupsProvider,
-    CategoriesProvider,
-  ]
+    MediaCapture,
+    File,
+    FirebaseX,
+    Geolocation,
+    Contacts,
+    Keyboard,
+    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
+  ],
+  bootstrap: [AppComponent],
 })
-export class AppModule {}
+export class AppModule { }

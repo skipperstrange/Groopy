@@ -1,0 +1,62 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>Login</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <div class="center ion-padding">
+    <img src="assets/images/logo.png" style="width:80px;height:80px;border-radius: 20px;" />
+    <h3>Groopy</h3>
+  </div>
+  <form [formGroup]="myForm">
+    <ion-list lines="none">
+      <ion-item>
+        <ion-label position="stacked">Email</ion-label>
+        <ion-input type="email" formControlName="email" email="true" [(ngModel)]="email"></ion-input>
+        <div *ngFor="let validation of errorMessages.email">
+          <p class="error"
+            *ngIf="myForm.get('email').hasError(validation.type) && (myForm.get('email').dirty || myForm.get('email').touched || submitAttempt) ">
+            {{validation.message}}
+          </p>
+        </div>
+      </ion-item>
+      <ion-item>
+        <ion-label position="stacked">Password</ion-label>
+        <ion-input type="password" formControlName="password" [(ngModel)]="password"></ion-input>
+        <div *ngFor="let validation of errorMessages.password">
+          <p class="error"
+            *ngIf="myForm.get('password').hasError(validation.type) && (myForm.get('password').dirty || myForm.get('password').touched || submitAttempt) ">
+            {{validation.message}}
+          </p>
+        </div>
+      </ion-item>
+      <ion-item>
+        <ion-button fill="clear" slot="end" color="medium" routerLink="/forgot">
+          Forgot?
+        </ion-button>
+      </ion-item>
+      <div class="ion-padding" style="padding-top:0">
+        <ion-button expand="block" color="primary" (click)="login()">
+          Login
+        </ion-button>
+        &nbsp;&nbsp;
+        <ion-button fill="clear" expand="block" routerLink="/register">
+          Create New account
+        </ion-button>
+        <div>
+          <p class="gray-text" style="text-align: center;">Or continue with</p>
+          <div style="display: flex; flex-direction: row; align-items: center; justify-content: center;">
+            <ion-button color="facebook" fill="clear" expand="block" (click)="loginWithFacebook()">
+              <ion-icon name="logo-facebook"></ion-icon>
+            </ion-button>
+            <ion-button color="google" fill="clear" expand="block" (click)="loginWithGoogle()">
+              <ion-icon name="logo-google"></ion-icon>
+            </ion-button>
+          </div>
+        </div>
+      </div>
+    </ion-list>
+
+  </form>
+</ion-content>

@@ -1,0 +1,44 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button mode="md"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Add Memebers</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="done()">Done</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <!-- All friends already in the group. -->
+  <div class="empty-list" *ngIf="friends && friends.length == 0">
+    <h1>
+      <ion-icon name="md-contacts"></ion-icon>
+    </h1>
+    <p>Uh-oh! Sorry but your friends are already a member of this group.</p>
+  </div>
+  <!-- Add/Cancel Add friends to the group. -->
+  <ion-list lines="none" *ngIf="friends && friends.length > 0">
+    <ion-searchbar [(ngModel)]="searchFriend" placeholder="Search for friend or username" showCancelButton="true"
+      cancelButtonText="Done"></ion-searchbar>
+    <ion-item *ngFor="let friend of friends | friendFilter:searchFriend" (click)="addOrRemove(friend)">
+
+      <ion-avatar slot="start">
+        <img src="{{friend.img}}" onError="this.src='./assets/images/default-dp.png'">
+      </ion-avatar>
+      <ion-label>
+        <ion-text>
+          <h2>{{friend.name}}</h2>
+        </ion-text>
+        <ion-text>
+          <p>@{{friend.username}}</p>
+        </ion-text>
+      </ion-label>
+      <ion-button size="small" slot="end" fill="outline" (click)="add(friend); $event.stopPropagation();"
+        *ngIf="!isAdded(friend)">Add</ion-button>
+      <ion-button size="small" slot="end" fill="outline" (click)="remove(friend); $event.stopPropagation();"
+        *ngIf="isAdded(friend)">Remove</ion-button>
+    </ion-item>
+  </ion-list>
+</ion-content>

@@ -1,0 +1,110 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button mode="md"></ion-back-button>
+    </ion-buttons>
+    <ion-title>
+      <h4>Create New Group</h4>
+      <p *ngIf="groupMembers">{{groupMembers.length}} memebers</p>
+    </ion-title>
+    <ion-buttons slot="end">
+      <ion-button fill="outline" (click)="done()">Create</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div *ngIf="group">
+    <ion-row>
+      <ion-col size="3" style="text-align:center;padding:1em">
+        <img src="{{group.img}}" *ngIf="group.img != ''" tappable (click)="setGroupPhoto()"
+          onError="this.src='./assets/images/default-group.png'" />
+        <img style="border-radius: 100%; width: 100px; height: 100px;" src="{{group.img}}"
+          onError="this.src='./assets/images/default-group.png'" *ngIf="group.img == ''" tappable
+          (click)="setGroupPhoto()" />
+      </ion-col>
+      <ion-col size="9">
+        <form [formGroup]="myForm">
+          <ion-list style="margin:0;" lines="none">
+            <ion-item>
+              <ion-label position="stacked">Group Name</ion-label>
+              <ion-input formControlName="groupName" type="text" [(ngModel)]="name" placeholder="Name of Group">
+              </ion-input>
+              <div *ngFor="let validation of errorMessages.groupName">
+                <p class="error"
+                  *ngIf="myForm.get('groupName').hasError(validation.type) && (myForm.get('groupName').dirty || myForm.get('groupName').touched || submitAttempt) ">
+                  {{validation.message}}
+                </p>
+              </div>
+            </ion-item>
+            <ion-item>
+              <ion-label position="stacked">Description</ion-label>
+              <ion-textarea formControlName="groupDescription" rows="3" [(ngModel)]="description"
+                placeholder="Describe this Group"></ion-textarea>
+              <div *ngFor="let validation of errorMessages.groupDescription">
+                <p class="error"
+                  *ngIf="myForm.get('groupDescription').hasError(validation.type) && (myForm.get('groupDescription').dirty || myForm.get('groupDescription').touched || submitAttempt) ">
+                  {{validation.message}}
+                </p>
+              </div>
+            </ion-item>
+          </ion-list>
+        </form>
+      </ion-col>
+    </ion-row>
+    <!-- <div *ngIf="groupMembers">
+      <ion-list-header>
+        Group Members
+      </ion-list-header>
+      <ion-list lines="none">
+        <ion-item  *ngFor="let member of groupMembers">
+          <ion-avatar slot="start">
+            <img src="{{member.img}}" onError="this.src='./assets/images/default-dp.png'" />
+          </ion-avatar>
+          <ion-label>
+            <ion-text>
+              <h2>{{member.name}}</h2>
+            </ion-text>
+            <ion-text>
+              <p>{{member.username}}</p>
+            </ion-text>
+          </ion-label>
+          <ion-button slot="end" fill="outline" (click)="removeFromGroup(member)">Remove</ion-button>
+        </ion-item>
+      </ion-list>
+    </div> -->
+
+
+    <ion-list-header>
+      Add New Members
+    </ion-list-header>
+    <div class="form">
+      <!-- No friends to create a group. -->
+      <div class="empty" *ngIf="friends && friends.length == 0">
+        <p>You have no friends right now to start a group conversation.</p>
+      </div>
+      <!-- Show friends to add/remove to group. -->
+      <ion-list lines="none" *ngIf="friends && friends.length > 0">
+        <ion-searchbar [(ngModel)]="searchFriend" placeholder="Search for friend or username" showCancelButton="true"
+          cancelButtonText="Done"></ion-searchbar>
+        <ion-item *ngFor="let friend of friends | friendFilter:searchFriend" (click)="addOrRemoveFromGroup(friend)">
+          <ion-avatar slot="start">
+            <img src="{{friend.img}}" onError="this.src='./assets/images/default-dp.png'">
+          </ion-avatar>
+          <ion-label>
+            <ion-text>
+              <h2>{{friend.name}}</h2>
+            </ion-text>
+            <ion-text>
+              <p>@{{friend.username}}</p>
+            </ion-text>
+          </ion-label>
+          <ion-button slot="end" color="light" (click)="addToGroup(friend); $event.stopPropagation();"
+            *ngIf="!inGroup(friend)">Add</ion-button>
+          <ion-button slot="end" color="light" (click)="removeFromGroup(friend); $event.stopPropagation();"
+            *ngIf="inGroup(friend)">Remove</ion-button>
+        </ion-item>
+      </ion-list>
+    </div>
+  </div>
+</ion-content>

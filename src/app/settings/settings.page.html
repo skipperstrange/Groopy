@@ -1,0 +1,37 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>Settings</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list lines="none">
+    <ion-item routerLink="/profile">
+      <ion-label>
+        <h3>Edit Profile</h3>
+      </ion-label>
+    </ion-item>
+    <ion-item-divider>Other Settings</ion-item-divider>
+    <ion-item>
+      <ion-label>
+        <ion-text>
+          <h3>Enable Notification</h3>
+        </ion-text>
+        <ion-text *ngIf="isBrowser">
+          <p>Push Notification only works on browser</p>
+        </ion-text>
+      </ion-label>
+      <ion-toggle mode="md" slot="end" [(ngModel)]="user.isPushEnabled" [disabled]="isBrowser"
+        (ionChange)="changeNotification()">
+      </ion-toggle>
+    </ion-item>
+    <ion-item routerLink="/blockedlist">
+      <ion-label>
+        <h3>Blocked List</h3>
+      </ion-label>
+    </ion-item>
+    <ion-item tappable (click)="setPassword()" *ngIf="user && user.provider == 'Email'">
+      Update Password
+    </ion-item>
+  </ion-list>
+</ion-content>

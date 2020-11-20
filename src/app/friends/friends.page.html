@@ -1,0 +1,163 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>Friends</ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <div class="ion-padding">
+    <ion-segment [(ngModel)]="tab" (ionChange)="segmentChanged($event)">
+      <ion-segment-button value="friends">
+        FRIENDS
+      </ion-segment-button>
+      <ion-segment-button value="requests">
+        REQUESTS
+        <span *ngIf="friendRequestCount != 0">({{friendRequestCount}})</span>
+      </ion-segment-button>
+      <ion-segment-button value="search">
+        FIND NEW
+      </ion-segment-button>
+    </ion-segment>
+  </div>
+  <div [ngSwitch]="tab">
+    <div *ngSwitchCase="'friends'">
+      <!-- No friends to show -->
+      <div class="empty-list" *ngIf="friends && friends.length == 0">
+        <h1>
+          <ion-icon name="contacts"></ion-icon>
+        </h1>
+        <p>You don't have new friend yet</p>
+      </div>
+      <ion-list lines="none" *ngIf="isLoading">
+        <ion-item *ngFor="let x of [].constructor(4)">
+          <ion-avatar slot="start">
+            <ion-skeleton-text animated></ion-skeleton-text>
+          </ion-avatar>
+          <ion-label>
+            <ion-skeleton-text animated style="width: 60%"></ion-skeleton-text>
+            <ion-skeleton-text animated style="width: 80%"></ion-skeleton-text>
+          </ion-label>
+        </ion-item>
+      </ion-list>
+      <!-- Show list of friends -->
+      <ion-list lines="none" *ngIf="friends && friends.length > 0">
+        <!-- <ion-searchbar [(ngModel)]="searchFriend" placeholder="Search for friend or username" showCancelButton="true" cancelButtonText="Done"></ion-searchbar> -->
+        <ion-item *ngFor="let friend of friends | friendFilter:searchFriend"
+          (click)="message(friend.$key); $event.stopPropagation();">
+          <ion-avatar slot="start">
+            <img src="{{friend.img}}" onError="this.src='./assets/images/default-dp.png'">
+          </ion-avatar>
+          <ion-label>
+            <ion-text>
+              <h2>{{friend.name}}</h2>
+            </ion-text>
+            <ion-text>
+              <p>{{friend.description}}</p>
+            </ion-text>
+          </ion-label>
+        </ion-item>
+      </ion-list>
+    </div>
+
+    <div *ngSwitchCase="'requests'">
+      <!-- No friend requests sent or received. -->
+      <div class="empty-list"
+        *ngIf="(friendRequests && friendRequests.length == 0) && (requestsSent && requestsSent.length == 0)">
+        <h1>
+          <ion-icon name="md-filing"></ion-icon>
+        </h1>
+        <p>No New Requests</p>
+      </div>
+      <ion-list lines="none" *ngIf="isLoading">
+        <ion-item *ngFor="let x of [].constructor(4)">
+          <ion-avatar slot="start">
+            <ion-skeleton-text animated></ion-skeleton-text>
+          </ion-avatar>
+          <ion-label>
+            <ion-skeleton-text animated style="width: 60%"></ion-skeleton-text>
+            <ion-skeleton-text animated style="width: 80%"></ion-skeleton-text>
+          </ion-label>
+        </ion-item>
+      </ion-list>
+      <!-- Show friend requests received. -->
+      <ion-list lines="none" *ngIf="friendRequests && friendRequests.length > 0">
+        <ion-item *ngFor="let friendRequest of friendRequests" (click)="viewUser(friendRequest.$key)">
+          <ion-avatar slot="start">
+            <img src="{{friendRequest.img}}" onError="this.src='http://placehold.it/80x80'">
+          </ion-avatar>
+          <ion-label>
+            <ion-text>
+              <h2>{{friendRequest.name}}</h2>
+            </ion-text>
+            <ion-text>
+              <p>has sent you a friend request.</p>
+            </ion-text>
+          </ion-label>
+          <ion-button color="acceptrequest" fill="outline"
+            (click)="acceptFriendRequest(friendRequest); $event.stopPropagation();">
+            Accept
+          </ion-button>
+        </ion-item>
+      </ion-list>
+      <!-- Show friend requests sent. -->
+      <ion-list lines="none" *ngIf="requestsSent && requestsSent.length > 0">
+        <ion-item *ngFor="let requestSent of requestsSent" no-lines tappable (click)="viewUser(requestSent.$key)">
+          <ion-avatar slot="start">
+            <img src="{{requestSent.img}}" onError="this.src='http://placehold.it/80x80'">
+          </ion-avatar>
+          <ion-label>
+            <ion-text>
+              <h2>{{requestSent.name}}</h2>
+            </ion-text>
+            <ion-text>
+              <p>friend request sent.</p>
+            </ion-text>
+          </ion-label>
+          <ion-button slot="end" fill="outline" color="cancelrequest"
+            (click)="cancelFriendRequest(requestSent); $event.stopPropagation();">
+            Cancel
+          </ion-button>
+        </ion-item>
+      </ion-list>
+    </div>
+
+    <div *ngSwitchCase="'search'">
+      <!-- Show other users excluding yourself, and friends with the help of searchFilter pipe. -->
+      <ion-searchbar [(ngModel)]="searchUser" (ionChange)="findNewFriends()" placeholder="Search User">
+      </ion-searchbar>
+      <p class="searchText" *ngIf="searchUser">Searching for <b>{{searchUser}}</b></p>
+      <ion-list lines="none" *ngIf="accounts && accounts.length > 0">
+
+        <ion-item *ngFor="let account of accounts | searchFilter: [excludedIds, searchUser]" no-lines tappable
+          (click)="viewUser(account.$key)">
+          <div slot="end">
+            <ion-button color="sendrequest" color="light"
+              (click)="sendFriendRequest(account); $event.stopPropagation();" *ngIf="getStatus(account) == 0">
+              add
+            </ion-button>
+            <ion-button color="cancelrequest" color="light"
+              (click)="cancelFriendRequest(account); $event.stopPropagation();" *ngIf="getStatus(account) == 1">
+              <!-- <ion-icon name="md-close-circle" class="danger"></ion-icon> -->
+              cancel
+            </ion-button>
+            <ion-button color="acceptrequest" color="light"
+              (click)="acceptFriendRequest(account); $event.stopPropagation();" *ngIf="getStatus(account) == 2">
+              <!-- <ion-icon name="md-checkmark-circle" class="success"></ion-icon> -->
+              accept
+            </ion-button>
+          </div>
+          <ion-avatar slot="start">
+            <img src="{{account.img}}" onError="this.src='./assets/images/default-dp.png'">
+          </ion-avatar>
+          <ion-label>
+            <ion-text>
+              <h2>{{account.name}}</h2>
+            </ion-text>
+            <ion-text>
+              <p>@{{account.username}}</p>
+            </ion-text>
+          </ion-label>
+        </ion-item>
+      </ion-list>
+    </div>
+  </div>
+</ion-content>

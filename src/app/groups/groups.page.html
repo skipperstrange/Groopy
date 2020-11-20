@@ -1,0 +1,50 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>Groups</ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <div class="empty-list" *ngIf="groups && groups.length <= 0">
+    <h1>
+      <ion-icon name="md-chatbubbles"></ion-icon>
+    </h1>
+    <p>No new groups yet.</p>
+  </div>
+  <ion-list lines="none" *ngIf="isLoading">
+    <ion-item *ngFor="let x of [].constructor(4)">
+      <ion-avatar slot="start">
+        <ion-skeleton-text animated></ion-skeleton-text>
+      </ion-avatar>
+      <ion-label>
+        <ion-skeleton-text animated style="width: 60%"></ion-skeleton-text>
+        <ion-skeleton-text animated style="width: 80%"></ion-skeleton-text>
+      </ion-label>
+    </ion-item>
+  </ion-list>
+  <!-- Show groups -->
+  <div *ngIf="groups && groups.length > 0">
+    <ion-searchbar [(ngModel)]="searchGroup" placeholder="search"></ion-searchbar>
+    <ion-list lines="none">
+      <ion-item *ngFor="let group of groups | groupFilter: searchGroup" (click)="viewGroup(group.key)">
+        <ion-thumbnail slot="start">
+          <img src="{{group.img}}" onError="this.src='./assets/images/default-group.png'">
+        </ion-thumbnail>
+        <ion-label>
+          <ion-text>
+            <h2>{{group.name}}</h2>
+          </ion-text>
+          <ion-text>
+            <p>{{group.date | DateFormat}}</p>
+          </ion-text>
+        </ion-label>
+        <ion-badge slot="end" color="danger" *ngIf="group.unreadMessagesCount > 0">{{group.unreadMessagesCount}}
+        </ion-badge>
+      </ion-item>
+    </ion-list>
+  </div>
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button>
+      <ion-icon name="add" routerLink="/newgroup"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+</ion-content>

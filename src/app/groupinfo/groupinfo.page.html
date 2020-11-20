@@ -1,0 +1,56 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button mode="md"></ion-back-button>
+    </ion-buttons>
+    <ion-title *ngIf="group">{{group.name}}</ion-title>
+    <ion-buttons slot="end">
+      <ion-button color="danger" (click)="leaveGroup()" *ngIf="groupMembers && groupMembers.length > 1">Leave
+      </ion-button>
+      <ion-button color="danger" (click)="deleteGroup()" *ngIf="groupMembers && groupMembers.length <= 1">Delete
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div *ngIf="group">
+    <ion-row style="background:#f3f3f3" padding>
+      <ion-col size="8">
+        <h4 tappable (click)="setName()">{{group.name}} <ion-icon name="create"></ion-icon>
+        </h4>
+        <p tappable style="color:#aaa" (click)="setDescription()">{{group.description}} <ion-icon name="create">
+          </ion-icon>
+        </p>
+        <p style="color:#aaa;margin:0">Started {{group.dateCreated | DateFormat}}</p>
+      </ion-col>
+      <ion-col size="4">
+        <img src="{{group.img}}" style="border-radius: 100%; width: 80px; height: 80px;" tappable (click)="setPhoto()"
+          onError="this.src='./assets/images/default-group.png'">
+      </ion-col>
+    </ion-row>
+    <ion-list *ngIf="groupMembers" lines="none">
+      <ion-item>
+        <ion-label>
+          <ion-text>
+            Group Members ({{groupMembers.length}})
+          </ion-text>
+        </ion-label>
+        <ion-button slot="end" (click)="addMembers()" fill="outline">Add</ion-button>
+      </ion-item>
+      <ion-item *ngFor="let member of groupMembers" (click)="viewUser(member.$key)">
+        <ion-avatar slot="start">
+          <img src="{{member.img}}" onError="this.src='./assets/images/default-dp.png'" />
+        </ion-avatar>
+        <ion-label>
+          <ion-text>
+            <h2>{{member.name}}</h2>
+          </ion-text>
+          <ion-text>
+            <p>{{member.description}}</p>
+          </ion-text>
+        </ion-label>
+      </ion-item>
+    </ion-list>
+  </div>
+</ion-content>

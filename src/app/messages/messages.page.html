@@ -1,0 +1,56 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>Chats</ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <ion-searchbar [(ngModel)]="searchFriend" placeholder="search.."></ion-searchbar>
+
+  <div class="empty-list" *ngIf="conversations && conversations.length <= 0">
+    <h1>
+      <ion-icon name="text"></ion-icon>
+    </h1>
+    <p>No new conversation yet.</p>
+  </div>
+  <!-- Show conversations -->
+
+  <ion-list lines="none" *ngIf="isLoading">
+    <ion-item *ngFor="let x of [].constructor(4)">
+      <ion-avatar slot="start">
+        <ion-skeleton-text animated></ion-skeleton-text>
+      </ion-avatar>
+      <ion-label>
+        <ion-skeleton-text animated style="width: 60%"></ion-skeleton-text>
+        <ion-skeleton-text animated style="width: 80%"></ion-skeleton-text>
+      </ion-label>
+    </ion-item>
+  </ion-list>
+
+  <ion-list lines="none" *ngIf="conversations && conversations.length > 0">
+
+    <div *ngFor="let conversation of conversations | conversationFilter:searchFriend">
+      <ion-item *ngIf="conversation.blocked != true" (click)="message(conversation.key)">
+
+        <ion-avatar slot="start" *ngIf="conversation.friend">
+          <img src="{{conversation.friend.img}}" onError="this.src='./assets/images/default-dp.png'">
+        </ion-avatar>
+        <div [ngClass]=hasUnreadMessages(conversation)>
+          <ion-label>
+            <ion-text>
+              <h2 *ngIf="conversation.friend">{{conversation.friend.name}}</h2>
+            </ion-text>
+            <ion-text>
+              <p>{{conversation.message}}</p>
+            </ion-text>
+          </ion-label>
+        </div>
+        <div slot="end" style="display: flex;flex-direction: column;align-items: flex-end;">
+          <ion-badge color="danger" *ngIf="conversation.unreadMessagesCount > 0">
+            {{conversation.unreadMessagesCount}}
+          </ion-badge>
+          <ion-text style="color: #777;font-size: 12px;">{{conversation.date | DateFormat}}</ion-text>
+        </div>
+      </ion-item>
+    </div>
+  </ion-list>
+</ion-content>
