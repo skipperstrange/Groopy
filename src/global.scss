@@ -103,7 +103,7 @@ ion-button{
     background: #eee;
     border-radius: 5px;
   }
-  
+
 .error{
   margin:0;
   color: #F44336;
@@ -117,4 +117,12 @@ ion-text p{
 
 .header-ios ion-toolbar:last-child{
   --border-color: #eee;
+}
+
+ion-content .login-background{
+  color: white;
+    background-size: 400% 400%;
+    background-attachment: fixed;
+    background: rgb(255,159,0);
+    background: linear-gradient(225deg, rgba(255,159,0,0.9920343137254902) 15%, rgba(255,162,80,1) 41%, rgba(194,125,14,0.7567401960784313) 57%, rgba(9,155,185,0.4290091036414566) 100%);
 }

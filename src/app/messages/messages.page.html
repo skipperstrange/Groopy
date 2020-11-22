@@ -1,6 +1,14 @@
 <ion-header>
   <ion-toolbar color="primary">
     <ion-title>Chats</ion-title>
+    <ion-buttons slot="end">
+      <ion-button>
+        <ion-icon name="search"></ion-icon>
+      </ion-button>
+      <ion-button>
+        <ion-icon name="ellipsis-vertical"></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 <ion-content>
@@ -14,7 +22,7 @@
   </div>
   <!-- Show conversations -->
 
-  <ion-list lines="none" *ngIf="isLoading">
+  <ion-list lines="none" *ngIf="isLoading">npm audit
     <ion-item *ngFor="let x of [].constructor(4)">
       <ion-avatar slot="start">
         <ion-skeleton-text animated></ion-skeleton-text>

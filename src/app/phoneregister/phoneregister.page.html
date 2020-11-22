@@ -1,3 +1,12 @@
-<ion-content>
+<ion-content class="ion-padding login-background" style="background-color: #000;">
+  <div id="recaptcha-container"></div>
 
+  <ion-item>
+    <ion-label stacked>Phone Number</ion-label>
+    <ion-input type="number" [(ngModel)]="phoneNumber"></ion-input>
+  </ion-item>
+
+  <ion-button block ful primary style="width: 100%; max-width:450px;" id="sign-in-button" (click)="registerWithPhone(phoneNumber)">
+    Sign In
+  </ion-button>
 </ion-content>

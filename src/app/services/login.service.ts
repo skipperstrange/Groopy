@@ -56,6 +56,11 @@ export class LoginService {
     })
   }
 
+
+  registerWithPhoneNumber(){
+
+  }
+
   reset(email) {
     console.log(email);
     this.loadingProvider.show();
@@ -199,7 +204,4 @@ export class LoginService {
     })
   }
 
-  registerWithPhoneNumber(){
-    
-  }
 }

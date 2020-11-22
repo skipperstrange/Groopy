@@ -29,6 +29,9 @@ plugins/
 plugins/android.json
 plugins/ios.json
 www/
+src/environments/environment.ts
+GoogleService-Info.plist
+google-services.json
 $RECYCLE.BIN/
 
 .DS_Store

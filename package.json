@@ -49,6 +49,7 @@
     "cordova-plugin-media-capture": "^3.0.3",
     "core-js": "^2.5.4",
     "firebase": "^7.3.0",
+    "ionicons": "^5.2.3",
     "moment": "^2.24.0",
     "rxjs": "^6.5.3",
     "save": "^2.4.0",
