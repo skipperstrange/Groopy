@@ -34,13 +34,13 @@ export class AppComponent {
       if (localStorage.getItem('isLoggedIn') == 'true') {
         this.afAuth.auth.onAuthStateChanged(user => {
           if (user == null)
-            this.router.navigateByUrl('/phoneregister', { replaceUrl: true, skipLocationChange: true })
+            this.router.navigateByUrl('/welcome', { replaceUrl: true, skipLocationChange: true })
           else
             this.router.navigateByUrl('/tabs/tab1', { skipLocationChange: true, replaceUrl: true })
         })
       }
       else {
-        this.router.navigateByUrl('/phoneregister');
+        this.router.navigateByUrl('/welcome');
       }
     });
   }

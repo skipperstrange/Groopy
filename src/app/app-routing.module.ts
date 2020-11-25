@@ -22,7 +22,8 @@ const routes: Routes = [
   { path: 'profile', loadChildren: './profile/profile.module#ProfilePageModule' },
   { path: 'forgot', loadChildren: './forgot/forgot.module#ForgotPageModule' },
   { path: 'settings', loadChildren: './settings/settings.module#SettingsPageModule' },
-  { path: 'phoneregister', loadChildren: './phoneregister/phoneregister.module#PhoneregisterPageModule' }
+  { path: 'phoneregister', loadChildren: './phoneregister/phoneregister.module#PhoneregisterPageModule' },
+  { path: 'welcome', loadChildren: './welcome/welcome.module#WelcomePageModule' }
 ];
 @NgModule({
   imports: [

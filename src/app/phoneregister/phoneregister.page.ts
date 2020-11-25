@@ -22,7 +22,7 @@ export class PhoneregisterPage implements OnInit {
               private router: Router, private alertCtrl: AlertController, private loadingProvider: LoadingService) { }
 
   ngOnInit() {
-    this.recaptchaVerifier = new firebase.auth.RecaptchaVerifier('recaptcha-container');
+    this.recaptchaVerifier = new firebase.auth.RecaptchaVerifier('recaptcha-container', { 'size': 'invisible' });
   }
 
   ionViewWillEnter(){
