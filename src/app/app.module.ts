@@ -13,7 +13,7 @@ import { AngularFireModule } from '@angular/fire';
 import { AngularFireDatabaseModule } from '@angular/fire/database';
 import { AngularFireStorageModule } from '@angular/fire/storage';
 import { AngularFireAuthModule } from '@angular/fire/auth';
-
+import { IonIntlTelInputModule } from 'ion-intl-tel-input';
 import { environment } from '../environments/environment.prod';
 
 import { GooglePlus } from '@ionic-native/google-plus/ngx';
@@ -49,7 +49,8 @@ import { ImagemodalPageModule } from './imagemodal/imagemodal.module'
     SharedModule,
     FormsModule,
     ReactiveFormsModule,
-    ImagemodalPageModule
+    ImagemodalPageModule,
+    IonIntlTelInputModule
   ],
   providers: [
     StatusBar,

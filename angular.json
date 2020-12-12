@@ -34,12 +34,16 @@
             "styles": [
               {
                 "input": "src/theme/variables.scss"
+
               },
-              {
-                "input": "src/global.scss"
-              }
+              {"input": "node_modules/intl-tel-input/build/css/intlTelInput.css", "lazy": true},
+              {"input": "node_modules/flag-icon-css/sass/flag-icon.scss"},
+              {"input": "src/global.scss"}
             ],
-            "scripts": []
+            "scripts": [
+              "node_modules/intl-tel-input/build/js/intlTelInput.min.js",
+              "node_modules/intl-tel-input/build/js/utils.js"
+            ]
           },
           "configurations": {
             "production": {

@@ -4,6 +4,7 @@ import { AngularFireDatabase } from '@angular/fire/database';
 import { auth } from 'firebase/app';
 
 import { LoadingService } from './loading.service';
+import { AlertController } from '@ionic/angular';
 import { Platform } from '@ionic/angular';
 
 import { GooglePlus } from '@ionic-native/google-plus/ngx';
@@ -22,6 +23,7 @@ export class LoginService {
     private afAuth: AngularFireAuth,
     private afdb: AngularFireDatabase,
     private loadingProvider: LoadingService,
+    private alertCtrl: AlertController,
     private platform: Platform,
     private gplus: GooglePlus,
     private facebook: Facebook,
@@ -171,6 +173,42 @@ export class LoginService {
     }
   }
 
+  phoneNumberLogin(phoneNumber, recapthaVerifier){
+
+    this.loadingProvider.show();
+    this.afAuth.auth.signInWithPhoneNumber(phoneNumber, recapthaVerifier)
+    .then( async (confirmationResult) => {
+      this.loadingProvider.hide();
+      let prompt = await this.alertCtrl.create({
+        header : 'Enter verification code.',
+        message: "Code sent to"+ phoneNumber,
+        inputs: [{ name: 'confirmationCode', placeholder: 'Confirmation Code' }],
+        buttons: [
+          { text: 'Cancel',
+            handler: data => { console.log('Canceled'); }
+          },
+          { text: 'Verify',
+            handler: data => {
+              console.log(data)
+              confirmationResult.confirm(data.confirmationCode)
+                .then(function (result) {
+                  localStorage.setItem('isLoggedIn', 'true');
+                  this.router.navigateByUrl('/');
+                })
+                .catch(function (err) {
+                  console.log(err)
+                });
+            }
+          }
+        ]
+      });
+      await prompt.present();
+    })
+    .catch(function (error) {
+      console.error("SMS not sent", error);
+    });
+  }
+
   createNewUser(userId, name, username, email, description = "I'm available", provider, img = "./assets/images/default-dp.png") {
     let dateCreated = new Date();
     this.afdb.object('/accounts/' + userId).update({
@@ -200,7 +238,7 @@ export class LoginService {
   logout() {
     this.afAuth.auth.signOut().then(() => {
       localStorage.clear();
-      this.router.navigateByUrl('/login', { replaceUrl: true, skipLocationChange: true })
+      this.router.navigateByUrl('/welcome', { replaceUrl: true, skipLocationChange: true })
     })
   }
 

@@ -1,14 +1,42 @@
-<ion-content padding [fullscreen]="true">
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button mode="md"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Login with phone</ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content padding>
   <div class="bg">
   <div id="recaptcha-container"></div>
 
   <h1>Welcome To Grööpy</h1>
   <p>Login to get started</p>
 
-  <ion-item>
-    <ion-label  position="floating">Phone Number</ion-label>
-    <ion-input type="number" [(ngModel)]="phoneNumber"></ion-input>
-  </ion-item>
+   <form>
+
+      <ion-item>
+        <ion-label position="stacked">Enter phone number to proceed.</ion-label>
+        <ion-intl-tel-input
+          id="phone-number"
+          name="phoneNumber"
+          [(ngModel)]="phoneNumber"
+          #phoneNumberControl="ngModel"
+          enableAutoCountrySelect="true"
+          selectFirstCountry="false"
+          ionIntlTelInputValid >
+        </ion-intl-tel-input>
+      </ion-item>
+
+      <div *ngIf="phoneNumberControl.invalid && phoneNumberControl.touched">
+        <ion-text color="danger" *ngIf="phoneNumberControl.errors.required">
+          <p class="error">Phone is required.</p>
+        </ion-text>
+        <ion-text color="danger" *ngIf="phoneNumberControl.errors.phone">
+          <p class="error">Phone is not valid.</p>
+        </ion-text>
+      </div>
+    </form>
 
   <ion-button block full outline style="width: 100%; max-width:450px;" id="sign-in-button" (click)="registerWithPhone(phoneNumber)">
     Sign In
