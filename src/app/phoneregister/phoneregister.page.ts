@@ -29,7 +29,15 @@ export class PhoneregisterPage implements OnInit {
                }
 
   ngOnInit() {
-    this.recaptchaVerifier = new firebase.auth.RecaptchaVerifier('recaptcha-container', { 'size': 'invisible' });
+    //TODO: Implement login without recaptcha
+    /*
+    this.recaptchaVerifier = new firebase.auth.RecaptchaVerifier('sign-in-button', { 'size': 'invisible', 'callback': function(response) {
+      console.log(response);
+      // reCAPTCHA solved, allow signInWithPhoneNumber.
+      this.registerWithPhone();
+    } });
+*/
+    this.recaptchaVerifier = new firebase.auth.RecaptchaVerifier('sign-in-button', { 'size': 'invisible'})
     this.myForm = new FormGroup({
       phoneNumber: new FormControl({
         value: this.formValue.phoneNumber

@@ -51,16 +51,13 @@ export class LoginService {
       localStorage.setItem('isLoggedIn', 'true');
       this.loadingProvider.hide();
       this.createNewUser(user.uid, name, username, user.email, "I am available", "Firebase", img);
+      this.router.navigateByUrl('/');
+
     }).catch(err => {
       console.log(err);
       this.loadingProvider.hide();
       this.loadingProvider.showToast(err.message);
     })
-  }
-
-
-  registerWithPhoneNumber(){
-
   }
 
   reset(email) {
@@ -86,6 +83,8 @@ export class LoginService {
             let uid = this.afAuth.auth.currentUser.uid;
             let userInfo = res.additionalUserInfo.profile;
             this.createNewUser(uid, userInfo.name, uid, userInfo.email, 'Available', 'Facebook', userInfo.picture);
+            this.router.navigateByUrl('/');
+
           }
           else {
             localStorage.setItem('isLoggedIn', 'true');
@@ -110,6 +109,8 @@ export class LoginService {
                 console.log(data)
                 let uid = this.afAuth.auth.currentUser.uid;
                 this.createNewUser(uid, data.first_name, uid, data.email, 'I am available', 'Facebook', data.picture.data.url);
+                this.router.navigateByUrl('/');
+
               })
               .catch(err => {
                 console.log(err);
@@ -138,6 +139,7 @@ export class LoginService {
             let uid = this.afAuth.auth.currentUser.uid;
             let userInfo = res.additionalUserInfo.profile;
             this.createNewUser(uid, userInfo.name, uid, userInfo.email, 'Available', 'Google', userInfo.picture);
+            this.router.navigateByUrl('/');
           } else {
             localStorage.setItem('isLoggedIn', 'true');
             this.router.navigateByUrl('/');
@@ -159,6 +161,7 @@ export class LoginService {
             let uid = this.afAuth.auth.currentUser.uid;
             let userInfo = res.additionalUserInfo.profile;
             this.createNewUser(uid, userInfo.name, uid, userInfo.email, 'Available', 'Google', userInfo.picture);
+            this.router.navigateByUrl('/');
           }
           else {
             localStorage.setItem('isLoggedIn', 'true');
@@ -174,7 +177,6 @@ export class LoginService {
   }
 
   phoneNumberLogin(phoneNumber, recapthaVerifier){
-
     this.loadingProvider.show();
     this.afAuth.auth.signInWithPhoneNumber(phoneNumber, recapthaVerifier)
     .then( async (confirmationResult) => {
@@ -189,13 +191,27 @@ export class LoginService {
           },
           { text: 'Verify',
             handler: data => {
-              console.log(data)
+
               confirmationResult.confirm(data.confirmationCode)
-                .then(function (result) {
-                  localStorage.setItem('isLoggedIn', 'true');
-                  this.router.navigateByUrl('/');
+                .then((result)=> {
+                  console.log(result);
+                  if(result){
+                    localStorage.setItem('isLoggedIn', 'true');
+                    const username = this.afAuth.auth.currentUser.phoneNumber
+                    const displayName = this.afAuth.auth.currentUser.phoneNumber
+                    const uid = this.afAuth.auth.currentUser.uid
+                    const description = 'I am available'
+                    const img = "./assets/images/default-dp.png"
+
+                    if(result.additionalUserInfo.isNewUser){
+                    this.createNewUser(uid, username, displayName, null, description, 'GSM', img)
+                    }
+
+                   // let userDetails = {"userId": uid, "name": username, "description": "description", "img": img}
+                    this.router.navigateByUrl('/confirmdetails');
+                  }
                 })
-                .catch(function (err) {
+                .catch((err) => {
                   console.log(err)
                 });
             }
@@ -211,12 +227,11 @@ export class LoginService {
 
   createNewUser(userId, name, username, email, description = "I'm available", provider, img = "./assets/images/default-dp.png") {
     let dateCreated = new Date();
-    this.afdb.object('/accounts/' + userId).update({
-      dateCreated, username, name, userId, email, description, provider, img
-    }).then(() => {
+
+    this.afdb.object('/accounts/' + userId).update({dateCreated, username, name, userId, email, description, provider, img}).then(() => {
       localStorage.setItem('isLoggedIn', 'true');
-      this.router.navigateByUrl('/');
     });
+    return false;
   }
 
   getUserData(uid) {

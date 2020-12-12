@@ -23,7 +23,8 @@ const routes: Routes = [
   { path: 'forgot', loadChildren: './forgot/forgot.module#ForgotPageModule' },
   { path: 'settings', loadChildren: './settings/settings.module#SettingsPageModule' },
   { path: 'phoneregister', loadChildren: './phoneregister/phoneregister.module#PhoneregisterPageModule' },
-  { path: 'welcome', loadChildren: './welcome/welcome.module#WelcomePageModule' }
+  { path: 'welcome', loadChildren: './welcome/welcome.module#WelcomePageModule' },
+  { path: 'confirmdetails', loadChildren: './confirmdetails/confirmdetails.module#ConfirmdetailsPageModule' }
 ];
 @NgModule({
   imports: [

@@ -1,0 +1,59 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>Profile Setup</ion-title>
+    <ion-buttons slot="end">
+      <ion-button routerLink="/">
+        <ion-text >Next</ion-text>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <div class="center ion-padding">
+    <img src="{{user.img}}" style="border-radius: 100%;height: 80px;width:80px" tappable (click)="setPhoto()"
+      onError="this.src='http://placehold.it/80x80'">
+  </div>
+  <form [formGroup]="myForm">
+    <ion-list lines="none">
+      <ion-item>
+        <ion-label position="stacked">Fullname</ion-label>
+        <ion-input type="text" formControlName="name" [(ngModel)]="user.name"></ion-input>
+        <div *ngFor="let validation of errorMessages.name">
+          <p class="error"
+            *ngIf="myForm.get('name').hasError(validation.type) && (myForm.get('name').dirty || myForm.get('name').touched || submitAttempt) ">
+            {{validation.message}}
+          </p>
+        </div>
+      </ion-item>
+      <ion-item>
+        <ion-label position="stacked">Username</ion-label>
+        <ion-input formControlName="username" type="text" [(ngModel)]="user.username"></ion-input>
+        <div *ngFor="let validation of errorMessages.username">
+          <p class="error"
+            *ngIf="myForm.get('username').hasError(validation.type) && (myForm.get('username').dirty || myForm.get('username').touched || submitAttempt) ">
+            {{validation.message}}
+          </p>
+        </div>
+      </ion-item>
+      <ion-item>
+        <ion-label position="stacked">Bio</ion-label>
+        <ion-textarea formControlName="bio" [(ngModel)]="user.description"></ion-textarea>
+        <div *ngFor="let validation of errorMessages.bio">
+          <p class="error"
+            *ngIf="myForm.get('bio').hasError(validation.type) && (myForm.get('bio').dirty || myForm.get('bio').touched || submitAttempt) ">
+            {{validation.message}}
+          </p>
+        </div>
+      </ion-item>
+      <ion-item>
+        <ion-label position="stacked">Email</ion-label>
+        <ion-input type="text" formControlName="email" [(ngModel)]="user.email" disabled></ion-input>
+      </ion-item>
+      <div class="ion-padding">
+        <ion-button expand="block" (click)="save()">Save</ion-button>
+        &nbsp;&nbsp;
+      </div>
+    </ion-list>
+  </form>
+</ion-content>
