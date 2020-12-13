@@ -4,13 +4,14 @@ import { DataService } from '../services/data.service';
 import { LoadingService } from '../services/loading.service';
 import { AngularFireDatabase } from '@angular/fire/database';
 import { AngularFireAuth } from '@angular/fire/auth';
-import { auth } from 'firebase/app';
 import { AlertController, Platform } from '@ionic/angular';
 import { ImageService } from '../services/image.service';
 import { Camera } from '@ionic-native/camera/ngx';
 
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Validator } from 'src/environments/validator';
+import { Router } from '@angular/router';
+
 
 @Component({
   selector: 'app-confirmdetails',
@@ -38,36 +39,47 @@ export class ConfirmdetailsPage implements OnInit {
     private imageProvider: ImageService,
     private camera: Camera,
     private formBuilder: FormBuilder,
+    private router: Router
   ) {
 
     this.errorMessages = Validator.errorMessages
     this.myForm = this.formBuilder.group({
       name: Validator.nameValidator,
       username: Validator.usernameValidator,
-      email: Validator.emailValidator,
       bio: Validator.bioValidator
     })
 
   }
 
-  ngOnInit(){}
+  ngOnInit(){
+
+  }
 
   ionViewDidEnter() {
 
-    console.log(this.dataProvider.getCurrentUser())
-    //this.user = this.loginService.getUserData(this.afAuth.auth.currentUser.uid);
-    console.log(this.user)
+    this.afAuth.auth.onAuthStateChanged(u => {
+      if (u != null) {
+        this.loginService.getUserData(u.uid).subscribe((user: any) => {
+          this.loginService.setUser({ uid: user.key, ...user.payload.val() });
+          this.user = this.loginService.getUser();
+        })
+      }
+    })
   }
 
 
 
-  save() {
+  saveAndContinue() {
     this.submitAttempt = true;
     if (this.myForm.valid) {
+    console.log("trying to save")
       this.loadingProvider.show();
       this.loginService.updateUser(this.user).then(() => {
         this.loadingProvider.hide();
         this.loadingProvider.showToast("Updated Successfully")
+        localStorage.clear();
+        localStorage.setItem('isLoggedIn', 'true');
+        this.router.navigateByUrl('/');
 
       }).catch(err => {
         this.loadingProvider.showToast("Something went wrong");
@@ -104,14 +116,5 @@ export class ConfirmdetailsPage implements OnInit {
         }
       ]
     }).then(r => r.present());
-  }
-
-  setPassword() {
-    this.afAuth.auth.sendPasswordResetEmail(this.afAuth.auth.currentUser.email)
-      .then(res => {
-        this.loadingProvider.showToast("Please Check your inbox");
-      }).catch(err => {
-        this.loadingProvider.showToast(err.message);
-      })
   }
 }

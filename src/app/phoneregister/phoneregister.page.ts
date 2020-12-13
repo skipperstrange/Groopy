@@ -37,7 +37,7 @@ export class PhoneregisterPage implements OnInit {
       this.registerWithPhone();
     } });
 */
-    this.recaptchaVerifier = new firebase.auth.RecaptchaVerifier('sign-in-button', { 'size': 'invisible'})
+    this.recaptchaVerifier = new firebase.auth.RecaptchaVerifier('recaptcha-container', { 'size': 'invisible'})
     this.myForm = new FormGroup({
       phoneNumber: new FormControl({
         value: this.formValue.phoneNumber

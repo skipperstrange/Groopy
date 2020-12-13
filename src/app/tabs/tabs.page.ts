@@ -40,6 +40,9 @@ export class TabsPage {
         }
       })
     }
+    else if(localStorage.getItem('buildProfile') =='true'){
+      this.router.navigateByUrl('/confirmdetails');
+    }
     else {
       this.router.navigateByUrl('/login');
     }

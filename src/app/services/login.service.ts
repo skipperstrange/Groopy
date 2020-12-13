@@ -194,9 +194,8 @@ export class LoginService {
 
               confirmationResult.confirm(data.confirmationCode)
                 .then((result)=> {
-                  console.log(result);
                   if(result){
-                    localStorage.setItem('isLoggedIn', 'true');
+                    localStorage.setItem('buildProfile', 'true');
                     const username = this.afAuth.auth.currentUser.phoneNumber
                     const displayName = this.afAuth.auth.currentUser.phoneNumber
                     const uid = this.afAuth.auth.currentUser.uid
