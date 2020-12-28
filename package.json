@@ -99,13 +99,16 @@
     "plugins": {
       "cordova-plugin-googleplus": {
         "REVERSED_CLIENT_ID": "com.googleusercontent.apps.845839389008-c85nsqqelc4sglnuc9vteltshtld9j3a",
-        "WEB_APPLICATION_CLIENT_ID": "742448802415-4edgde4dp0e96b26s7bv76klpv1aq74g.apps.googleusercontent.com"
+        "WEB_APPLICATION_CLIENT_ID": "742448802415-4edgde4dp0e96b26s7bv76klpv1aq74g.apps.googleusercontent.com",
+        "PLAY_SERVICES_VERSION": "15.0.1"
       },
       "cordova-plugin-whitelist": {},
       "cordova-plugin-statusbar": {},
       "cordova-plugin-device": {},
       "cordova-plugin-splashscreen": {},
-      "cordova-plugin-ionic-webview": {},
+      "cordova-plugin-ionic-webview": {
+        "ANDROID_SUPPORT_ANNOTATIONS_VERSION": "27.+"
+      },
       "cordova-plugin-ionic-keyboard": {},
       "cordova-plugin-facebook4": {
         "APP_ID": "",

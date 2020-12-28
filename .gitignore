@@ -29,7 +29,9 @@ plugins/
 plugins/android.json
 plugins/ios.json
 www/
+resources/
 src/environments/environment.ts
+src/environments/environment.prod.ts
 GoogleService-Info.plist
 google-services.json
 $RECYCLE.BIN/
